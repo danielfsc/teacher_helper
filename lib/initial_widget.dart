@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 
-import 'Pages/configuracao.dart';
+import 'Pages/configuracao/configuracao.dart';
 import 'Pages/home.dart';
 
 class InitialWidget extends StatelessWidget {
@@ -19,7 +19,7 @@ class InitialWidget extends StatelessWidget {
                     ? Brightness.dark
                     : Brightness.light,
               ),
-              initialRoute: '/configuracoes',
+              initialRoute: '/',
               routes: {
                 '/': (context) => const HomePage(),
                 '/configuracoes': (context) => const ConfiguracaoPage(),

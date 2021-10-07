@@ -4,6 +4,13 @@ class AppController extends ChangeNotifier {
   static AppController instance = AppController();
 
   bool isDark = false;
+  bool isLeftHanded = false;
+
+  changeHand() {
+    isLeftHanded = !isLeftHanded;
+    notifyListeners();
+  }
+
   changeTheme() {
     isDark = !isDark;
     notifyListeners();
