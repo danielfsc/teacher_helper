@@ -15,4 +15,8 @@ class AppController extends ChangeNotifier {
     isDark = !isDark;
     notifyListeners();
   }
+
+  brightness() {
+    return isDark ? Brightness.dark : Brightness.light;
+  }
 }

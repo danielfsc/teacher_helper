@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'initial_widget.dart';
+import 'initial.dart';
 
 void main() {
   runApp(const InitialWidget());

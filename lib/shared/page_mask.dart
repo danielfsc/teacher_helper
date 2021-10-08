@@ -5,7 +5,9 @@ import 'menu.dart';
 class PageMask extends StatefulWidget {
   final String title;
   final Widget body;
-  const PageMask({Key? key, required this.body, required this.title})
+  final Widget? floatingButton;
+  const PageMask(
+      {Key? key, required this.body, required this.title, this.floatingButton})
       : super(key: key);
 
   @override
@@ -22,23 +24,24 @@ class _PageMaskState extends State<PageMask> {
       drawer: AppController.instance.isLeftHanded ? const MenuPage() : null,
       endDrawer: AppController.instance.isLeftHanded ? null : const MenuPage(),
       body: widget.body,
+      floatingActionButton: widget.floatingButton,
     );
   }
 }
 
-class MenuButton extends StatelessWidget {
-  const MenuButton({Key? key}) : super(key: key);
+// class MenuButton extends StatelessWidget {
+//   const MenuButton({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-        onPressed: () {
-          if (AppController.instance.isLeftHanded) {
-            Scaffold.of(context).openDrawer();
-          } else {
-            Scaffold.of(context).openEndDrawer();
-          }
-        },
-        icon: const Icon(Icons.menu));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return IconButton(
+//         onPressed: () {
+//           if (AppController.instance.isLeftHanded) {
+//             Scaffold.of(context).openDrawer();
+//           } else {
+//             Scaffold.of(context).openEndDrawer();
+//           }
+//         },
+//         icon: const Icon(Icons.menu));
+//   }
+// }
