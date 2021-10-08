@@ -21,27 +21,10 @@ class _PageMaskState extends State<PageMask> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      drawer: AppController.instance.isLeftHanded ? const MenuPage() : null,
-      endDrawer: AppController.instance.isLeftHanded ? null : const MenuPage(),
+      drawer: AppController.instance.isLeftHanded ? MenuPage() : null,
+      endDrawer: AppController.instance.isLeftHanded ? null : MenuPage(),
       body: widget.body,
       floatingActionButton: widget.floatingButton,
     );
   }
 }
-
-// class MenuButton extends StatelessWidget {
-//   const MenuButton({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return IconButton(
-//         onPressed: () {
-//           if (AppController.instance.isLeftHanded) {
-//             Scaffold.of(context).openDrawer();
-//           } else {
-//             Scaffold.of(context).openEndDrawer();
-//           }
-//         },
-//         icon: const Icon(Icons.menu));
-//   }
-// }
