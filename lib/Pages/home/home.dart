@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
           return HomeCardWidget(value);
         }).toList(),
       ),
-      title: 'Inicio',
+      title: 'Home Page do app',
     );
   }
 }
