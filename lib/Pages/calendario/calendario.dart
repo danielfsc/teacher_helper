@@ -10,16 +10,7 @@ class CalendarioPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageMask( 
       title: 'Calendário',
-    
-      /*body: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add, color: Colors.white,),
-          onPressed: ()=>Navigator.of(context).push(
-            MaterialPageRoute(builder:(context) => EventEditingPage()),
-          ),
-
-        ),*/
-      body: SfCalendar(
+        body: SfCalendar(
         view:CalendarView.month,
         showNavigationArrow: true,
         firstDayOfWeek: 1,
@@ -29,9 +20,20 @@ class CalendarioPage extends StatelessWidget {
         //backgroundColor: Color.fromRGBO(0, 0, 0, 0),
         todayHighlightColor: Colors.red,
         dataSource: MeetingDataSource(getAppointments()),
-      ),
+        ),
+
+        floatingButton: FloatingActionButton (onPressed: (){
+          print('teste');
+                  },
+                  child: const Icon(Icons.plus_one),
+        backgroundColor: Colors.red,
+        
+        
+        
+        ),
     );
-     
+    
+      
    
     }
 }
