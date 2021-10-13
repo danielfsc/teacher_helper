@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'menu.dart';
 
+// Estrutura padrão das páginas do APP - Não é obrigatório utilizar
+// #Parâmetros
+// - title : Uma String com o texto que será colocado na AppBar;
+// - body : O widget que será colocado no corpo da página;
+// - floatingButton: Um FloatActionButton para ser adicionado na página;
+// Esse widget não é obrigatório usar na página, mas ele deixa todas as páginas
+// dentro do mesmo padrão de cor, botões e menus.
+
 class PageMask extends StatefulWidget {
   final String title;
   final Widget body;
