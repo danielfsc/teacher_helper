@@ -45,14 +45,5 @@ class HomeCardWidget extends StatelessWidget {
         ),
       ),
     );
-    // return Container(
-    //   alignment: Alignment.center,
-    //   margin: const EdgeInsets.all(8),
-    //   decoration: BoxDecoration(
-    //     border: Border.all(color: Colors.black),
-    //   ),
-    //   child: Text(info.title),
-    // );
-    // ;
   }
 }
