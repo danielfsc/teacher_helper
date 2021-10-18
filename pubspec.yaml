@@ -31,13 +31,10 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   flutter_zoom_drawer: ^2.1.1
-  syncfusion_flutter_calendar: ^19.3.45
-#calendar
-syncfusion_flutter_calendar: ^19.1.59
-#handle dates
+  shared_preferences: ^2.0.8
+  table_calendar: ^2.2.1
 intl: ^0.17.0
-# state managements 
-provider: ^5.0.0
+
 
 dev_dependencies:
   flutter_test:
