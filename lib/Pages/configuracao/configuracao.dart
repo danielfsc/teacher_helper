@@ -11,6 +11,7 @@ class ConfiguracaoPage extends StatelessWidget {
     return PageMask(
       title: 'Configurações',
       body: ListView(
+        scrollDirection: Axis.vertical,
         children: [
           const DarkModeWidget(),
           const LeftHandedMode(),
@@ -21,7 +22,7 @@ class ConfiguracaoPage extends StatelessWidget {
             width: 150,
             child: MaterialButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('/');
+                Navigator.of(context).popAndPushNamed('/');
               },
               child: const Padding(
                 padding: EdgeInsets.all(8.0),

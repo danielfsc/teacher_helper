@@ -34,16 +34,31 @@ A nossa proposta principal, é criar um aplicativo onde professores podem fazer 
 
 ## Primeira Entrega
 
-- Turmas;
+- Página Inicial;
+- Turmas; 
+    - Visualizar Lista de Turmas;
+    - Criar e Editar as Turmas;
 - Calendário;
-- Planos de Aula - só a parte de escrever um plano de aula;
 
 ## Segunda Entrega
-
-- Planos de Aula - O que falta;
+- Planos de Aula;
+    - Visualizar Lista de Planos de Aulas;
+    - Criar e Editar as Turmas;
 - Atividades;
 - Busca;
 - Play;
+
+# Metodologia de Desenvolvimento
+
+O programa vai utilizar uma arquitetura MVC (Model-View-Controller).
+
+Estamos usando o princípio do [algoritmo guloso](https://pt.wikipedia.org/wiki/Algoritmo_guloso) para desenvolvimento do aplicativo. A cada ciclo de densenvolvimento, cada membro fica responsável por fazer uma tela do programa (definida de acordo com afinidade, dificuldade e nível do desenvolvedor). Entendemos por tela o processo de desenvolver a View (tela propriamente dita), a model das entidades apresentadas na view e o controller para as entidades que demandam armazenamento. Ao final de cada ciclo, a equipe se reune para criar os adaptadores quando uma tela precisar se comunicar com outra tela.
+
+O tempo, separação e tarefas dos membros da equipe não permite que utilizemos nada que envolva metodologia Ágil ou mesmo o Scrum.
+
+
+
+
 
 # Desenvolvedores
 - Daniel Girardi (git:@danielfsc)

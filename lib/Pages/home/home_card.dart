@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:teacher_helper/shared/data/opcoes.dart';
+import 'package:teacher_helper/shared/modelos/opcao_menu.dart';
 
 class HomeCardWidget extends StatelessWidget {
   const HomeCardWidget(this.info, {Key? key}) : super(key: key);
-  final OpcoesModelo info;
+  final OpcaoMenu info;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class HomeCardWidget extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            Navigator.of(context).pushNamed(info.route);
+            Navigator.of(context).popAndPushNamed(info.route);
           },
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.35,

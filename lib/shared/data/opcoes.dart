@@ -1,25 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:teacher_helper/shared/modelos/opcao_menu.dart';
 
-List<OpcoesModelo> opcoes = [
-  OpcoesModelo(Icons.school, 'Turmas', '/turmas', true, Colors.blueAccent),
-  OpcoesModelo(Icons.event, 'Calendário', '/calendario', true, Colors.red),
-  OpcoesModelo(
-      Icons.menu_book, 'Planos de Aula', '/planos', true, Colors.orange),
-  OpcoesModelo(Icons.search, 'Procurar', '/procurar', false, Colors.green),
-  OpcoesModelo(
-      Icons.category, 'Atividades', '/atividades', false, Colors.indigo),
-  OpcoesModelo(
+List<OpcaoMenu> opcoes = [
+  OpcaoMenu(Icons.school, 'Turmas', '/turmas', true, Colors.blueAccent),
+  OpcaoMenu(Icons.event, 'Calendário', '/calendario', true, Colors.red),
+  OpcaoMenu(Icons.menu_book, 'Planos de Aula', '/planos', false, Colors.orange),
+  OpcaoMenu(Icons.search, 'Procurar', '/procurar', false, Colors.green),
+  OpcaoMenu(Icons.category, 'Atividades', '/atividades', false, Colors.indigo),
+  OpcaoMenu(
       Icons.settings, 'Configuraçoes', '/configuracoes', true, Colors.brown),
 ];
 
 List teste = [];
-
-class OpcoesModelo {
-  final IconData icon;
-  final String title;
-  final String route;
-  final bool active;
-  final Color color;
-
-  OpcoesModelo(this.icon, this.title, this.route, this.active, this.color);
-}

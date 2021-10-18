@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/home/home_body.dart';
+import 'package:teacher_helper/Pages/turmas/turma_editor/turma_editor.dart';
 import 'package:teacher_helper/shared/data/opcoes.dart';
+import 'package:teacher_helper/shared/modelos/opcao_menu.dart';
 import 'package:teacher_helper/shared/page_mask.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
-  final List<OpcoesModelo> _opcoes = opcoes;
+  final List<OpcaoMenu> _opcoes = opcoes;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,10 @@ class HomePage extends StatelessWidget {
       floatingButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          print("TESTE");
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TurmaEditor()),
+          );
         },
       ),
     );
