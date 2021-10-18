@@ -96,7 +96,8 @@ class DiaAula {
     return _horario(fimHora, fimMinuto);
   }
 
-  String intervalo(context) {
-    return '${inicio.format(context)}-${fim.format(context)} ';
+  String intervalo(context, {String? separator}) {
+    separator = separator ?? '-';
+    return '${inicio.format(context)} $separator ${fim.format(context)} ';
   }
 }

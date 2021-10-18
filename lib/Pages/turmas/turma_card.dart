@@ -38,27 +38,30 @@ class TurmasCard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.3,
-                child: Wrap(
-                  children: turma.dias
-                      .map(
-                        (dia) => Row(
-                          children: [
-                            Text(
-                              dia.dia.curto,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(' (${dia.intervalo(context)})')
-                          ],
-                        ),
-                      )
-                      .toList(),
+              Expanded(
+                child: Center(
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    children: turma.dias
+                        .map(
+                          (dia) => Column(
+                            // direction: Axis.horizontal,
+                            children: [
+                              Text(
+                                dia.dia.curto,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(' ${dia.intervalo(context, separator: '-')}')
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  ),
                 ),
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.3,
+                width: MediaQuery.of(context).size.width * 0.25,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

@@ -40,6 +40,8 @@ A nossa proposta principal, é criar um aplicativo onde professores podem fazer 
     - Criar e Editar as Turmas;
 - Calendário;
 
+Vídeo com o resultado da primeira entrega está no [YouTube](https://www.youtube.com/watch?v=N5IGxV1wZVE).
+
 ## Segunda Entrega
 - Planos de Aula;
     - Visualizar Lista de Planos de Aulas;
