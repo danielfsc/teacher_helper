@@ -17,8 +17,7 @@ class _TurmasBodyState extends State<TurmasBody> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.8,
+        Expanded(
           child: FutureBuilder<List<Turma>>(
             builder: (context, snapshot) {
               if (snapshot.data != null) {
