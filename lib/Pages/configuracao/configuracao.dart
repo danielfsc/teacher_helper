@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/configuracao/darkmode.dart';
-import 'package:teacher_helper/Pages/configuracao/lefthandmode.dart';
+// import 'package:teacher_helper/Pages/configuracao/lefthandmode.dart';
 import 'package:teacher_helper/shared/page_mask.dart';
 
 class ConfiguracaoPage extends StatelessWidget {
@@ -14,7 +14,7 @@ class ConfiguracaoPage extends StatelessWidget {
         scrollDirection: Axis.vertical,
         children: [
           const DarkModeWidget(),
-          const LeftHandedMode(),
+          // const LeftHandedMode(),
           const SizedBox(
             height: 50,
           ),

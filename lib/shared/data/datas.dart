@@ -13,6 +13,25 @@ extension SemanaText on Semana {
     ];
   }
 
+  String get byday {
+    switch (this) {
+      case Semana.domingo:
+        return 'SU';
+      case Semana.segunda:
+        return 'MO';
+      case Semana.terca:
+        return 'TU';
+      case Semana.quarta:
+        return 'WE';
+      case Semana.quinta:
+        return 'TH';
+      case Semana.sexta:
+        return 'FR';
+      case Semana.sabado:
+        return 'SA';
+    }
+  }
+
   String get extenso {
     switch (this) {
       case Semana.domingo:

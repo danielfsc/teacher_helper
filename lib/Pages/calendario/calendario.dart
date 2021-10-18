@@ -1,32 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:teacher_helper/Pages/calendario/eventos.dart';
+import 'package:teacher_helper/controllers/turmas_controller.dart';
+import 'package:teacher_helper/shared/modelos/turma.dart';
 import 'package:teacher_helper/shared/page_mask.dart';
 
-class CalendarioPage extends StatelessWidget {
+class CalendarioPage extends StatefulWidget {
   const CalendarioPage({Key? key}) : super(key: key);
+
+  @override
+  State<CalendarioPage> createState() => _CalendarioPageState();
+}
+
+class _CalendarioPageState extends State<CalendarioPage> {
+  final TurmasController turmasController = TurmasController();
 
   @override
   Widget build(BuildContext context) {
     return PageMask(
       title: 'Calendário',
-      body: SfCalendar(
-        view: CalendarView.month,
-        showNavigationArrow: true,
-        firstDayOfWeek: 1,
-        initialDisplayDate: DateTime.now(),
-        initialSelectedDate: DateTime.now(),
-        cellBorderColor: Colors.red,
-        //backgroundColor: Color.fromRGBO(0, 0, 0, 0),
-        todayHighlightColor: Colors.red,
-        dataSource: MeetingDataSource(getAppointments()),
-      ),
-      floatingButton: FloatingActionButton(
-        onPressed: () {
-          print('teste');
+      body: FutureBuilder<List<Turma>>(
+        builder: (context, snapshot) {
+          if (snapshot.data != null) {
+            if (snapshot.data!.isNotEmpty) {
+              return SfCalendar(
+                view: CalendarView.week,
+                showNavigationArrow: true,
+                firstDayOfWeek: 7,
+                initialDisplayDate: DateTime.now(),
+                initialSelectedDate: DateTime.now(),
+                todayHighlightColor: Theme.of(context).primaryColor,
+                dataSource: MeetingDataSource(eventosTurmas(snapshot.data!)),
+              );
+            } else {
+              return const Center(
+                child: Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Text('Sem turmas registradas'),
+                  ),
+                ),
+              );
+            }
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
         },
-        child: const Icon(Icons.plus_one),
-        backgroundColor: Colors.red,
+        future: turmasController.getAll(),
       ),
     );
   }

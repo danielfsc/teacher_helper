@@ -67,7 +67,7 @@ class TurmasCard extends StatelessWidget {
                       icon: const Icon(Icons.edit),
                     ),
                     IconButton(
-                      onPressed: () => onDelete(turma),
+                      onPressed: () => showAlertDialog(context, turma),
                       icon: const Icon(Icons.delete),
                     )
                   ],
@@ -84,6 +84,41 @@ class TurmasCard extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => TurmaEditor(turma: turma)),
+    );
+  }
+
+  showAlertDialog(BuildContext context, Turma turma) {
+    // set up the buttons
+    Widget cancelButton = ElevatedButton(
+      child: const Text("Cancelar"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    Widget continueButton = TextButton(
+      child: const Text("Deletar"),
+      onPressed: () {
+        onDelete(turma);
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Deletar Turma"),
+      content: const Text(
+          "Você vai deletar uma turma e esse processo é irreversível. TEM CERTEZA?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

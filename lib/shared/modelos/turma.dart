@@ -6,10 +6,12 @@ class Turma {
   String nome;
   String? escola;
   String? disciplina;
+  int cor;
   List<DiaAula> dias = [];
 
   Turma({
     required this.nome,
+    required this.cor,
     this.escola,
     this.disciplina,
     required this.dias,
@@ -20,8 +22,9 @@ class Turma {
     json['dias'].forEach((element) {
       dias.add(DiaAula.fromJson(element));
     });
-
+    int color = json['cor'] ?? 4283215696;
     return Turma(
+      cor: color,
       nome: json["nome"],
       escola: json["escola"],
       disciplina: json["disciplina"],
@@ -34,6 +37,7 @@ class Turma {
     // dias.map((value) => print('Teste'));
     return {
       'nome': nome,
+      'cor': cor,
       'escola': escola,
       'disciplina': disciplina,
       'dias': dias.map((value) => value.toJson()).toList(growable: false),
@@ -66,6 +70,10 @@ class DiaAula {
         fimHora: json["fimHora"],
         fimMinuto: json["fimMinuto"],
       );
+
+  int get duracaoMinutos {
+    return (fimHora * 60 + fimMinuto) - (inicioHora * 60 + inicioMinuto);
+  }
 
   Map<String, dynamic> toJson() => {
         'dia': dia.index,

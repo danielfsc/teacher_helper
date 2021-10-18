@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/turmas/turma_editor/ajusta_hora.dart';
 import 'package:teacher_helper/controllers/turmas_controller.dart';
+import 'package:teacher_helper/shared/color_picker.dart';
 import 'package:teacher_helper/shared/data/datas.dart';
 import 'package:teacher_helper/shared/modelos/turma.dart';
 
@@ -24,6 +25,7 @@ class _TurmaEditorState extends State<TurmaEditor> {
   final _escola = TextEditingController();
   final _disciplina = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  int _cor = 4283215696;
 
   List<DiaAula> dias = [];
 
@@ -39,6 +41,7 @@ class _TurmaEditorState extends State<TurmaEditor> {
       _nome.text = _turma!.nome;
       _escola.text = _turma!.escola ?? '';
       _disciplina.text = _turma!.disciplina ?? '';
+      _cor = _turma!.cor;
 
       dias = _turma!.dias;
     }
@@ -59,117 +62,123 @@ class _TurmaEditorState extends State<TurmaEditor> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Wrap(
-            spacing: 20,
-            runSpacing: 20,
-            children: [
-              TextFormField(
-                decoration: _decoration('Nome da Turma*'),
-                controller: _nome,
-                //initialValue: '',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, dê um nome para a turma';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                decoration: _decoration('Escola'),
-                controller: _escola,
-                // initialValue: turma.escola,
-              ),
-              TextFormField(
-                decoration: _decoration('Disciplina'),
-                controller: _disciplina,
-                // initialValue: turma.disciplina,
-              ),
-              InputDecorator(
-                decoration: _decoration('Adicionar Aula'),
-                child: Wrap(
-                  direction: Axis.horizontal,
-                  alignment: WrapAlignment.spaceEvenly,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Wrap(
+              spacing: 20,
+              runSpacing: 20,
+              children: [
+                TextFormField(
+                  decoration: _decoration('Nome da Turma*'),
+                  controller: _nome,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, dê um nome para a turma';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  decoration: _decoration('Escola'),
+                  controller: _escola,
+                ),
+                TextFormField(
+                  decoration: _decoration('Disciplina'),
+                  controller: _disciplina,
+                ),
+                ColorPicker(
+                  onSelectColor: (Color color) {
+                    _cor = color.value;
+                  },
+                  initialColor: Color(_cor),
+                ),
+                InputDecorator(
+                  decoration: _decoration('Adicionar Aula'),
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.spaceEvenly,
+                    children: [
+                      DropdownButton<Semana>(
+                        value: _diaSelecionado,
+                        onChanged: (Semana? newvalue) {
+                          setState(() {
+                            _diaSelecionado = newvalue;
+                          });
+                        },
+                        items: Semana.values.map((Semana dia) {
+                          return DropdownMenuItem<Semana>(
+                            value: dia,
+                            child: Text(dia.longo),
+                          );
+                        }).toList(),
+                      ),
+                      AjustaHora(
+                        title: 'Início',
+                        time: intervalo['inicio']!,
+                        onChange: (TimeOfDay value) {
+                          setState(() {
+                            intervalo['inicio'] = value;
+                          });
+                        },
+                      ),
+                      AjustaHora(
+                        title: 'Fim',
+                        time: intervalo['fim']!,
+                        onChange: (TimeOfDay value) {
+                          setState(() {
+                            intervalo['fim'] = value;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        onPressed: () => _adicionaDias(),
+                        icon: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
+                ),
+                InputDecorator(
+                  decoration: _decoration('Dias de Aula'),
+                  child: ListView(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    children: dias.map((d) {
+                      var indice = dias.indexOf(d);
+                      return Card(
+                        child: ListTile(
+                          title: Text(d.dia.extenso),
+                          subtitle: Text(d.intervalo(context)),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              _removeDias(indice);
+                            },
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    DropdownButton<Semana>(
-                      value: _diaSelecionado,
-                      onChanged: (Semana? newvalue) {
-                        setState(() {
-                          _diaSelecionado = newvalue;
-                        });
-                      },
-                      items: Semana.values.map((Semana dia) {
-                        return DropdownMenuItem<Semana>(
-                          value: dia,
-                          child: Text(dia.longo),
-                        );
-                      }).toList(),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Cancelar'),
                     ),
-                    AjustaHora(
-                      title: 'Início',
-                      time: intervalo['inicio']!,
-                      onChange: (TimeOfDay value) {
-                        setState(() {
-                          intervalo['inicio'] = value;
-                        });
-                      },
+                    const SizedBox(
+                      width: 40,
                     ),
-                    AjustaHora(
-                      title: 'Fim',
-                      time: intervalo['fim']!,
-                      onChange: (TimeOfDay value) {
-                        setState(() {
-                          intervalo['fim'] = value;
-                        });
+                    ElevatedButton(
+                      onPressed: () {
+                        _salvaTurma(context);
                       },
-                    ),
-                    IconButton(
-                      onPressed: () => _adicionaDias(),
-                      icon: const Icon(Icons.add),
+                      child: const Text('Salvar'),
                     ),
                   ],
                 ),
-              ),
-              InputDecorator(
-                decoration: _decoration('Dias de Aula'),
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  children: dias.map((d) {
-                    var indice = dias.indexOf(d);
-                    return Card(
-                      child: ListTile(
-                        title: Text(d.dia.extenso),
-                        subtitle: Text(d.intervalo(context)),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            _removeDias(indice);
-                          },
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Cancelar'),
-                  ),
-                  const SizedBox(
-                    width: 40,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _salvaTurma(context);
-                    },
-                    child: const Text('Salvar'),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -179,6 +188,7 @@ class _TurmaEditorState extends State<TurmaEditor> {
   void _salvaTurma(context) {
     Turma turma = Turma(
         nome: _nome.text,
+        cor: _cor,
         escola: _escola.text,
         disciplina: _disciplina.text,
         dias: dias);
