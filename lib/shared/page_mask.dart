@@ -32,7 +32,7 @@ class _PageMaskState extends State<PageMask> {
       angle: 0,
       backgroundColor: Colors.grey,
       // backgroundColor: Theme.of(context).primaryColor,
-      menuScreen: SafeArea(child: MenuPage()),
+      menuScreen: const SafeArea(child: MenuPage()),
       mainScreen: BodyMask(
         title: widget.title,
         body: widget.body,

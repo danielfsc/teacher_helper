@@ -1,4 +1,4 @@
-package com.example.teacher_helper
+package com.danielgirardi.teacher_helper
 
 import io.flutter.embedding.android.FlutterActivity
 

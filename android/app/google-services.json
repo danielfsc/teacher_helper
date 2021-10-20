@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "439459465181",
+    "project_id": "teacher-helper-49011",
+    "storage_bucket": "teacher-helper-49011.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439459465181:android:50807515c24a2fa6b91834",
+        "android_client_info": {
+          "package_name": "com.danielgirardi.teacher_helper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439459465181-1pa79u0tka3h1cbfd8toktj0k9oe36j8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.danielgirardi.teacher_helper",
+            "certificate_hash": "044272c7930b02bfc7d64717502f1e0ced2ee416"
+          }
+        },
+        {
+          "client_id": "439459465181-764e7i9pp2eg8kmujhf4pbhuqjm190ll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.danielgirardi.teacher_helper",
+            "certificate_hash": "67e5ea75f90046a933bff29a2d7114ae47c72d67"
+          }
+        },
+        {
+          "client_id": "439459465181-nu19ffjsmh53nbveo2n8nq3lmj7vuo0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqmHmx1hhMN-RyHMVM7AtdgPgHXzkx2NM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439459465181-nu19ffjsmh53nbveo2n8nq3lmj7vuo0t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

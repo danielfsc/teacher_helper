@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,6 +7,16 @@ class AppController extends ChangeNotifier {
   // SharedPreferences? prefs;
   bool isDark = false;
   bool isLeftHanded = false;
+
+  User? _user;
+
+  User get user {
+    return _user!;
+  }
+
+  set user(User? user) {
+    _user = user;
+  }
 
   changeHand() {
     isLeftHanded = !isLeftHanded;

@@ -36,6 +36,7 @@ List<Appointment> getAppointments() {
   return meetings;
 }
 
+
 List<Appointment> eventosTurmas(List<Turma> turmas) {
   List<Appointment> eventos = <Appointment>[];
   for (var turma in turmas) {

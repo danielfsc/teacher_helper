@@ -45,7 +45,6 @@ class TurmasCard extends StatelessWidget {
                     children: turma.dias
                         .map(
                           (dia) => Column(
-                            // direction: Axis.horizontal,
                             children: [
                               Text(
                                 dia.dia.curto,
