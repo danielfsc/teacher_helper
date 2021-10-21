@@ -1,16 +1,17 @@
 import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/turmas/turma_editor/ajusta_hora.dart';
-import 'package:teacher_helper/controllers/turmas_controller.dart';
+import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/color_picker.dart';
 import 'package:teacher_helper/shared/data/datas.dart';
 import 'package:teacher_helper/shared/modelos/turma.dart';
 
 class TurmaEditor extends StatefulWidget {
-  const TurmaEditor({Key? key, this.turma}) : super(key: key);
+  const TurmaEditor({Key? key, this.turma, this.docId}) : super(key: key);
 
   final Turma? turma;
+  final String? docId;
 
   @override
   State<TurmaEditor> createState() => _TurmaEditorState();
@@ -19,7 +20,8 @@ class TurmaEditor extends StatefulWidget {
 class _TurmaEditorState extends State<TurmaEditor> {
   Turma? _turma;
 
-  TurmasController dbTurmas = TurmasController();
+  CollectionReference turmas = FirebaseFirestore.instance
+      .collection('usuarios/${AppController.instance.user.email!}/turmas');
 
   final _nome = TextEditingController();
   final _escola = TextEditingController();
@@ -34,15 +36,12 @@ class _TurmaEditorState extends State<TurmaEditor> {
   @override
   void initState() {
     super.initState();
-    if (widget.turma != null) {
-      log('Vou definir os valores iniciais');
-
+    if (widget.docId != null) {
       _turma = widget.turma;
       _nome.text = _turma!.nome;
       _escola.text = _turma!.escola ?? '';
       _disciplina.text = _turma!.disciplina ?? '';
       _cor = _turma!.cor;
-
       dias = _turma!.dias;
     }
   }
@@ -187,15 +186,20 @@ class _TurmaEditorState extends State<TurmaEditor> {
 
   void _salvaTurma(context) {
     Turma turma = Turma(
-        nome: _nome.text,
-        cor: _cor,
-        escola: _escola.text,
-        disciplina: _disciplina.text,
-        dias: dias);
-    if (widget.turma != null) {
-      dbTurmas.delete(widget.turma!);
+      nome: _nome.text,
+      cor: _cor,
+      escola: _escola.text,
+      disciplina: _disciplina.text,
+      dias: dias,
+    );
+    if (widget.docId != null) {
+      log('Deveria editar a turma');
+      turmas.doc(widget.docId).set(turma.toJson());
+    } else {
+      log('Vou adicionar nova turma');
+      turmas.add(turma.toJson());
     }
-    dbTurmas.insere(turma);
+
     Navigator.of(context).pop(true);
   }
 

@@ -33,53 +33,51 @@ class _LoginPageState extends State<LoginPage> {
               right: 16.0,
               bottom: 20.0,
             ),
-            child: Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Row(),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Image.asset(
-                            'assets/teacher_logo.png',
-                            height: 160,
-                          ),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Row(),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: Image.asset(
+                          'assets/teacher_logo.png',
+                          height: 160,
                         ),
-                        const SizedBox(height: 20),
-                        Text(
-                          'Teacher Helper',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontSize: 40,
-                          ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'Teacher Helper',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          fontSize: 40,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  FutureBuilder(
-                    future: Authentication.initializeFirebase(context: context),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text(
-                            'Erro ao iniciar o Banco de dados (Firebase)');
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.done) {
-                        return const GoogleLoginButton();
-                      }
-                      return const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          CustomColors.firebaseOrange,
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+                ),
+                FutureBuilder(
+                  future: Authentication.initializeFirebase(context: context),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text(
+                          'Erro ao iniciar o Banco de dados (Firebase)');
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                      return const GoogleLoginButton();
+                    }
+                    return const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        CustomColors.firebaseOrange,
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ),

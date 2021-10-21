@@ -17,7 +17,7 @@ class Turma {
     required this.dias,
   });
 
-  factory Turma.fromJson(Map<String, dynamic> json) {
+  factory Turma.fromJson(json) {
     List<DiaAula> dias = [];
     json['dias'].forEach((element) {
       dias.add(DiaAula.fromJson(element));
@@ -33,8 +33,6 @@ class Turma {
   }
 
   Map<String, dynamic> toJson() {
-    // print(dias);
-    // dias.map((value) => print('Teste'));
     return {
       'nome': nome,
       'cor': cor,
@@ -44,8 +42,6 @@ class Turma {
     };
   }
 }
-
-
 
 class DiaAula {
   Semana dia;
@@ -65,7 +61,7 @@ class DiaAula {
     return dia.curto;
   }
 
-  factory DiaAula.fromJson(Map<String, dynamic> json) => DiaAula(
+  factory DiaAula.fromJson(json) => DiaAula(
         dia: Semana.values[json['dia']],
         inicioHora: json["inicioHora"],
         inicioMinuto: json["inicioMinuto"],

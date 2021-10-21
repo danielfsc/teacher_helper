@@ -10,15 +10,16 @@ List<Appointment> getAppointments() {
   final DateTime today = DateTime.now();
   final DateTime startTime =
       DateTime(today.year, today.month, today.day, 19, 0, 0);
-  // final DateTime endTime = startTime.add(const Duration(hours: 2));
 
-  meetings.add(Appointment(
-      startTime: startTime, //evento de duas horas com recorrencia
-      endTime: startTime.add(const Duration(minutes: 50)),
-      subject: 'Aula Programação - Daniel',
-      color: Colors.red,
-      recurrenceRule:
-          'FREQ=WEEKLY;BYDAY:TH, WE, FR, SA')); //UMA AULA NESSE DIA DA SEMANA A CADA 7 DIAS POR 6 SEMANAS*/
+  meetings.add(
+    Appointment(
+        startTime: startTime, //evento de duas horas com recorrencia
+        endTime: startTime.add(const Duration(minutes: 50)),
+        subject: 'Aula Programação - Daniel',
+        color: Colors.red,
+        recurrenceRule: 'FREQ=WEEKLY;BYDAY:TH, WE, FR, SA'),
+  );
+  //UMA AULA NESSE DIA DA SEMANA A CADA 7 DIAS POR 6 SEMANAS*/
 
   meetings.add(Appointment(
       //evento dentro de um mesmo dia com duração
@@ -35,7 +36,6 @@ List<Appointment> getAppointments() {
 
   return meetings;
 }
-
 
 List<Appointment> eventosTurmas(List<Turma> turmas) {
   List<Appointment> eventos = <Appointment>[];

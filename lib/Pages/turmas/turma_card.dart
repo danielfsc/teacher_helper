@@ -4,12 +4,17 @@ import 'package:teacher_helper/shared/data/datas.dart';
 import 'package:teacher_helper/shared/modelos/turma.dart';
 
 class TurmasCard extends StatelessWidget {
-  const TurmasCard({Key? key, required this.turma, required this.onDelete})
+  const TurmasCard(
+      {Key? key,
+      required this.turma,
+      required this.onDelete,
+      required this.docId})
       : super(key: key);
 
-  final Function(Turma turma) onDelete;
+  final Function(String docId) onDelete;
 
   final Turma turma;
+  final String docId;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +90,11 @@ class TurmasCard extends StatelessWidget {
   void _edit(context, Turma turma) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TurmaEditor(turma: turma)),
+      MaterialPageRoute(
+          builder: (context) => TurmaEditor(
+                turma: turma,
+                docId: docId,
+              )),
     );
   }
 
@@ -101,7 +110,7 @@ class TurmasCard extends StatelessWidget {
     Widget continueButton = TextButton(
       child: const Text("Deletar"),
       onPressed: () {
-        onDelete(turma);
+        onDelete(docId);
         Navigator.of(context).pop();
       },
     );

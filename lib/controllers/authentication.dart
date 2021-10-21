@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,12 @@ class Authentication {
 
   static void setUserAndGoToHome(BuildContext context, User user) {
     AppController.instance.user = user;
+    FirebaseFirestore.instance.collection('usuarios').doc(user.email).set({
+      'uid': user.uid,
+      'email': user.email,
+      'photoURL': user.photoURL,
+      'phoneNumber': user.phoneNumber,
+    });
     Navigator.of(context).popAndPushNamed("/home");
   }
 
