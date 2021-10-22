@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
-import 'package:teacher_helper/controllers/routes.dart';
+import 'package:teacher_helper/shared/data/routes.dart';
 
 class InitialWidget extends StatelessWidget {
   const InitialWidget({Key? key}) : super(key: key);

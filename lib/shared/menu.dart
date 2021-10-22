@@ -1,10 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
-import 'package:teacher_helper/shared/data/opcoes.dart';
 import 'package:teacher_helper/controllers/authentication.dart';
+import 'package:teacher_helper/shared/data/routes.dart';
 
-import 'data/custom_colors.dart';
 import 'modelos/opcao_menu.dart';
 
 class MenuPage extends StatefulWidget {
@@ -69,11 +69,18 @@ class _MenuPageState extends State<MenuPage> {
             padding: const EdgeInsets.all(8.0),
             child: ClipOval(
               child: Material(
-                color: CustomColors.firebaseGrey.withOpacity(0.3),
-                child: Image.network(
-                  _user.photoURL!,
+                color: Colors.grey,
+                child: CachedNetworkImage(
                   fit: BoxFit.fitHeight,
+                  imageUrl: _user.photoURL!,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
+                // Image.network(
+                //   _user.photoURL!,
+                //   fit: BoxFit.fitHeight,
+                // ),
               ),
             ),
           ),
@@ -92,13 +99,13 @@ class _MenuPageState extends State<MenuPage> {
     }
     return ClipOval(
       child: Material(
-        color: CustomColors.firebaseGrey.withOpacity(0.3),
+        color: Colors.grey.withOpacity(0.3),
         child: const Padding(
           padding: EdgeInsets.all(16.0),
           child: Icon(
             Icons.person,
             size: 60,
-            color: CustomColors.firebaseGrey,
+            color: Colors.grey,
           ),
         ),
       ),

@@ -9,3 +9,10 @@ class OpcaoMenu {
 
   OpcaoMenu(this.icon, this.title, this.route, this.active, this.color);
 }
+
+class IconMenu {
+  final String value;
+  final IconData icon;
+
+  IconMenu(this.value, this.icon);
+}

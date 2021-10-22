@@ -1,6 +1,6 @@
 import 'package:sembast/sembast.dart';
 import 'package:teacher_helper/controllers/app_database.dart';
-import 'package:teacher_helper/shared/modelos/turma.dart';
+import 'package:teacher_helper/shared/modelos/turma_model.dart';
 
 class TurmasController {
   static const String folderName = 'Turmas';

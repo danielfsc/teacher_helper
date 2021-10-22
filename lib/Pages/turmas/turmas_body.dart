@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/turmas/turma_card.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
-import 'package:teacher_helper/shared/modelos/turma.dart';
+import 'package:teacher_helper/shared/modelos/turma_model.dart';
 import 'package:teacher_helper/shared/widgets/empty_loading.dart';
 
 class TurmasBody extends StatefulWidget {

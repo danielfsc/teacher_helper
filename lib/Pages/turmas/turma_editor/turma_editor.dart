@@ -5,7 +5,7 @@ import 'package:teacher_helper/Pages/turmas/turma_editor/ajusta_hora.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/color_picker.dart';
 import 'package:teacher_helper/shared/data/datas.dart';
-import 'package:teacher_helper/shared/modelos/turma.dart';
+import 'package:teacher_helper/shared/modelos/turma_model.dart';
 
 class TurmaEditor extends StatefulWidget {
   const TurmaEditor({Key? key, this.turma, this.docId}) : super(key: key);

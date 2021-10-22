@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:teacher_helper/shared/data/datas.dart';
-import 'package:teacher_helper/shared/modelos/turma.dart';
+import 'package:teacher_helper/shared/modelos/turma_model.dart';
 
 // @Deprecated - criei outra função;
 List<Appointment> getAppointments() {

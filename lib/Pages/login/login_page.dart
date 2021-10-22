@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/login/google_login_button.dart';
-import 'package:teacher_helper/shared/data/custom_colors.dart';
 import 'package:teacher_helper/controllers/authentication.dart';
 
 class LoginPage extends StatefulWidget {
@@ -72,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     return const CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        CustomColors.firebaseOrange,
+                        Colors.orange,
                       ),
                     );
                   },

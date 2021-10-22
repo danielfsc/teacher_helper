@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/turmas/turma_editor/turma_editor.dart';
 import 'package:teacher_helper/shared/data/datas.dart';
-import 'package:teacher_helper/shared/modelos/turma.dart';
+import 'package:teacher_helper/shared/modelos/turma_model.dart';
 
 class TurmasCard extends StatelessWidget {
   const TurmasCard(
