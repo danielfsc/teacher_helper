@@ -106,8 +106,6 @@ class _PlanoAulaBodyState extends State<PlanoAulaBody> {
     );
   }
 
-  _deletaPlano() {}
-
   var menuItens = [
     IconMenu('Visualizar', Icons.visibility),
     IconMenu('Editar', Icons.edit),

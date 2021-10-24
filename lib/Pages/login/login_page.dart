@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/login/google_login_button.dart';
 import 'package:teacher_helper/controllers/authentication.dart';
@@ -10,6 +11,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  Future<FirebaseApp>? _auth;
+
+  @override
+  void initState() {
+    _auth = Authentication.initializeFirebase(context: context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 FutureBuilder(
-                  future: Authentication.initializeFirebase(context: context),
+                  future: _auth,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return const Text(
