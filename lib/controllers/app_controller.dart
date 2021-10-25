@@ -6,7 +6,7 @@ class AppController extends ChangeNotifier {
   static AppController instance = AppController._();
   // SharedPreferences? prefs;
   bool isDark = false;
-  bool isLeftHanded = false;
+  bool isLeftHanded = true;
 
   User? _user;
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:teacher_helper/shared/menu.dart';
 import 'package:teacher_helper/shared/body_mask.dart';
+import 'package:teacher_helper/shared/modelos/opcao_menu.dart';
 
 class PageMask extends StatefulWidget {
   final String title;
@@ -21,6 +22,10 @@ class PageMask extends StatefulWidget {
 
 class _PageMaskState extends State<PageMask> {
   final _zoomController = ZoomDrawerController();
+
+  final OpcaoMenu inicial =
+      OpcaoMenu(Icons.home, 'Início', '/home', true, Colors.black);
+
   @override
   Widget build(BuildContext context) {
     return ZoomDrawer(
@@ -29,10 +34,11 @@ class _PageMaskState extends State<PageMask> {
       showShadow: true,
       slideWidth: MediaQuery.of(context).size.width * 0.55,
       style: DrawerStyle.Style1,
-      angle: 0,
-      backgroundColor: Colors.grey,
-      // backgroundColor: Theme.of(context).primaryColor,
-      menuScreen: const SafeArea(child: MenuPage()),
+      angle: -5,
+      backgroundColor: Colors.orangeAccent,
+      openCurve: Curves.easeInCirc,
+      closeCurve: Curves.easeOutCirc,
+      menuScreen: const MenuPage(),
       mainScreen: BodyMask(
         title: widget.title,
         body: widget.body,

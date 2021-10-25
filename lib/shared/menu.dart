@@ -20,7 +20,6 @@ class _MenuPageState extends State<MenuPage> {
   final User _user = AppController.instance.user;
 
   bool _estaSaindo = false;
-
   @override
   void initState() {
     super.initState();
@@ -44,17 +43,19 @@ class _MenuPageState extends State<MenuPage> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              _cabecalhoWidget(),
-              const Divider(),
-              _menuOpcoes(),
-              _botaoSair(),
-            ],
+        body: SafeArea(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                _cabecalhoWidget(),
+                const Divider(),
+                _menuOpcoes(),
+                _botaoSair(),
+              ],
+            ),
           ),
         ),
       ),
@@ -77,10 +78,6 @@ class _MenuPageState extends State<MenuPage> {
                       const CircularProgressIndicator(),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
-                // Image.network(
-                //   _user.photoURL!,
-                //   fit: BoxFit.fitHeight,
-                // ),
               ),
             ),
           ),

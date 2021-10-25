@@ -288,7 +288,16 @@ class _PlanoEditorState extends State<PlanoEditor> {
     });
   }
 
-  _addAtividade(context) async {}
+  _addAtividade(context) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PlanoAtividadeEditor()),
+    ).then((value) {
+      if (value != null) {
+        setState(() => atividades.add(value));
+      }
+    });
+  }
 
   Widget _lista(context, String list, {String title = '', String? subtitle}) {
     return Container(
@@ -380,7 +389,7 @@ class _PlanoEditorState extends State<PlanoEditor> {
     if (_formKey.currentState!.validate()) {
       CollectionReference plano =
           FirebaseFirestore.instance.collection('planosaula');
-      if (widget.plano!['id'] != null) {
+      if (widget.plano != null && widget.plano!['id'] != null) {
         plano.doc(widget.plano['id']).set(criaPlanoMap());
       } else {
         plano.add(criaPlanoMap());

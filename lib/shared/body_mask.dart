@@ -30,28 +30,39 @@ class BodyMask extends StatefulWidget {
 class _BodyMaskState extends State<BodyMask> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        leading: AppController.instance.isLeftHanded
-            ? const MenuButtonWidget()
-            : null,
-        actions: AppController.instance.isLeftHanded
-            ? []
-            : [const MenuButtonWidget()],
+    return WillPopScope(
+      onWillPop: _redirectTo,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+          leading: AppController.instance.isLeftHanded
+              ? const MenuButtonWidget()
+              : null,
+          actions: AppController.instance.isLeftHanded
+              ? []
+              : [const MenuButtonWidget()],
+        ),
+        // drawer: AppController.instance.isLeftHanded ? MenuPage() : null,
+        // endDrawer: AppController.instance.isLeftHanded ? null : MenuPage(),
+        body: widget.body,
+        floatingActionButton: widget.floatingButton,
+        floatingActionButtonLocation:
+            widget.floatingButtonLocation ?? _floatButtonPosition(),
       ),
-      // drawer: AppController.instance.isLeftHanded ? MenuPage() : null,
-      // endDrawer: AppController.instance.isLeftHanded ? null : MenuPage(),
-      body: widget.body,
-      floatingActionButton: widget.floatingButton,
-      floatingActionButtonLocation:
-          widget.floatingButtonLocation ?? _floatButtonPosition(),
     );
+  }
+
+  Future<bool> _redirectTo() async {
+    if (ModalRoute.of(context) != null &&
+        ModalRoute.of(context)!.settings.name != '/home') {
+      Navigator.of(context).popAndPushNamed('/');
+    }
+    return false;
   }
 
   _floatButtonPosition() {
     return AppController.instance.isLeftHanded
-        ? FloatingActionButtonLocation.startFloat
+        ? FloatingActionButtonLocation.endFloat
         : FloatingActionButtonLocation.endFloat;
   }
 }

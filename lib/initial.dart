@@ -12,7 +12,7 @@ class InitialWidget extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           theme: ThemeData(
-            primarySwatch: Colors.blueGrey,
+            primarySwatch: Colors.blue,
             brightness: AppController.instance.brightness(),
           ),
           initialRoute: '/',
