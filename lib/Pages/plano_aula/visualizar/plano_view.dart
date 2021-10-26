@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:teacher_helper/Pages/plano_aula/editor/plano_editor.dart';
+import 'package:teacher_helper/Pages/plano_aula/executar/plano_executar.dart';
 import 'package:teacher_helper/shared/data/nivel_escolar.dart';
 import 'package:teacher_helper/shared/modelos/opcao_menu.dart';
 import 'package:teacher_helper/shared/modelos/plano_model.dart';
@@ -154,6 +155,12 @@ class _PlanoViewState extends State<PlanoView> {
             geraPlano(widget.plano);
             break;
           case 'Executar Plano':
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PlanoExecutar(
+                      plano: transformaDataEmPlano(data, data.id))),
+            );
             break;
         }
       },

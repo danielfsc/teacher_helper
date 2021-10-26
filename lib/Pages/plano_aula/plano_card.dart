@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:teacher_helper/Pages/plano_aula/executar/plano_executar.dart';
 import 'package:teacher_helper/Pages/plano_aula/visualizar/plano_view.dart';
 import 'package:teacher_helper/shared/modelos/opcao_menu.dart';
 import 'package:teacher_helper/shared/modelos/plano_model.dart';
@@ -62,6 +63,10 @@ class _PlanoCardState extends State<PlanoCard> {
     IconMenu('Duplicar', Icons.copy),
     IconMenu('Deletar', Icons.delete),
     IconMenu('Agendar', Icons.event),
+    IconMenu(
+      'Executar Plano',
+      Icons.play_arrow,
+    ),
   ];
 
   Widget _menu(BuildContext context, data) {
@@ -120,6 +125,14 @@ class _PlanoCardState extends State<PlanoCard> {
                 });
               }
             });
+            break;
+          case 'Executar Plano':
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PlanoExecutar(
+                      plano: transformaDataEmPlano(data, data.id))),
+            );
             break;
         }
       },
