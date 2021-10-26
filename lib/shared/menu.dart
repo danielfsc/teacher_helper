@@ -36,8 +36,8 @@ class _MenuPageState extends State<MenuPage> {
           begin: Alignment.centerLeft,
           end: Alignment.topLeft,
           colors: [
-            Colors.blueGrey,
-            Colors.blueAccent,
+            Colors.indigo,
+            Colors.blue,
           ],
         ),
       ),

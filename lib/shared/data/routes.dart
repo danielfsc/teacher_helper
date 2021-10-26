@@ -24,7 +24,7 @@ List<OpcaoMenu> opcoes = [
   OpcaoMenu(Icons.event, 'Calendário', '/calendario', true, Colors.red),
   OpcaoMenu(Icons.menu_book, 'Planos de Aula', '/planos', true, Colors.orange),
   OpcaoMenu(Icons.search, 'Procurar', '/procurar', false, Colors.green),
-  OpcaoMenu(Icons.category, 'Atividades', '/atividades', false, Colors.indigo),
+  // OpcaoMenu(Icons.category, 'Atividades', '/atividades', false, Colors.indigo),
   OpcaoMenu(
-      Icons.settings, 'Configuraçoes', '/configuracoes', true, Colors.brown),
+      Icons.settings, 'Configuraçoes', '/configuracoes', true, Colors.indigo),
 ];

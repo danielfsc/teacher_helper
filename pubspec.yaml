@@ -41,6 +41,10 @@ dependencies:
   cloud_firestore: ^2.5.3
   cached_network_image: ^3.1.0
   prompt_dialog: ^1.0.6
+  docx_template: ^0.3.2
+  permission_handler: any
+  open_file: ^3.2.1 
+  share: ^2.0.4
 
 
   #Handle dates

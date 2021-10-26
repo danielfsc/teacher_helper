@@ -30,3 +30,20 @@ class PlanoAula {
 
   saveInFireStore() {}
 }
+
+transformaDataEmPlano(data, id) {
+  return {
+    'id': id,
+    'userMail': data['userMail'],
+    'titulo': data['titulo'],
+    'publico': data['publico'],
+    'disciplina': data['disciplina'],
+    'nivel': data['nivel'],
+    'preparacao': data['preparacao'],
+    'conteudos': data['conteudos'],
+    'objetivos': data['objetivos'],
+    'recursos': data['recursos'],
+    'atividades': data['atividades'],
+    'bibliografias': data['bibliografias'],
+  };
+}

@@ -87,6 +87,7 @@ class _PlanoEditorState extends State<PlanoEditor> {
             spacing: 20,
             runSpacing: 20,
             children: [
+              const SizedBox.shrink(),
               TextFormField(
                 decoration: _decoration('Título*'),
                 controller: _titulo,
@@ -394,7 +395,7 @@ class _PlanoEditorState extends State<PlanoEditor> {
       } else {
         plano.add(criaPlanoMap());
       }
-      Navigator.of(context).pop();
+      Navigator.of(context).popAndPushNamed('/planos');
     }
   }
 

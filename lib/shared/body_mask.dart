@@ -42,8 +42,6 @@ class _BodyMaskState extends State<BodyMask> {
               ? []
               : [const MenuButtonWidget()],
         ),
-        // drawer: AppController.instance.isLeftHanded ? MenuPage() : null,
-        // endDrawer: AppController.instance.isLeftHanded ? null : MenuPage(),
         body: widget.body,
         floatingActionButton: widget.floatingButton,
         floatingActionButtonLocation:

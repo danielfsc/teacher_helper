@@ -59,7 +59,7 @@ class _GoogleLoginButtonState extends State<GoogleLoginButton> {
                     Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: Text(
-                        'Login com Google',
+                        'Entrar com Google',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.black54,
