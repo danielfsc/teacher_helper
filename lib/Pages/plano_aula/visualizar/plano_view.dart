@@ -11,8 +11,10 @@ import 'package:teacher_helper/shared/widgets/display_utils.dart';
 import 'package:teacher_helper/shared/widgets/show_dialog.dart';
 
 class PlanoView extends StatefulWidget {
-  const PlanoView({Key? key, required this.plano}) : super(key: key);
+  const PlanoView({Key? key, required this.plano, this.isPrivate = true})
+      : super(key: key);
   final dynamic plano;
+  final bool isPrivate;
 
   @override
   State<PlanoView> createState() => _PlanoViewState();
@@ -106,20 +108,19 @@ class _PlanoViewState extends State<PlanoView> {
     Navigator.of(context).pop();
   }
 
-  var menuItens = [
-    IconMenu('Duplicar', Icons.copy),
-    IconMenu('Agendar', Icons.event),
-    IconMenu('Gerar Word', Icons.document_scanner),
-    IconMenu('Executar Plano', Icons.play_arrow),
-  ];
-
   Widget _menu(BuildContext context, data) {
+    var menuItens = [
+      IconMenu('Duplicar', Icons.copy),
+      IconMenu('Agendar', Icons.event, isPrivate: widget.isPrivate),
+      IconMenu('Gerar Word', Icons.document_scanner),
+      IconMenu('Executar Plano', Icons.play_arrow),
+    ];
     return PopupMenuButton(
       child: const Icon(
         Icons.more_vert_outlined,
         size: 30,
       ),
-      itemBuilder: (context) => menuItens.map((e) {
+      itemBuilder: (context) => menuItens.where((e) => e.isPrivate).map((e) {
         return PopupMenuItem(
           value: e.value,
           child: ListTile(

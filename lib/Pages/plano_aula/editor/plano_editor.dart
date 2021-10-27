@@ -375,7 +375,7 @@ class _PlanoEditorState extends State<PlanoEditor> {
       'userMail': AppController.instance.user.email,
       'titulo': _titulo.text,
       'publico': publico,
-      'disciplina': _disciplina.text,
+      'disciplina': _disciplina.text.toUpperCase(),
       'nivel': nivel,
       'preparacao': _preparacao.text,
       'conteudos': listas['conteudos'],

@@ -5,6 +5,7 @@ import 'package:teacher_helper/Pages/firestore/firestore_page.dart';
 import 'package:teacher_helper/Pages/home/home_page.dart';
 import 'package:teacher_helper/Pages/login/login_page.dart';
 import 'package:teacher_helper/Pages/plano_aula/plano_page.dart';
+import 'package:teacher_helper/Pages/procura/procurar_page.dart';
 import 'package:teacher_helper/Pages/turmas/turmas_page.dart';
 import 'package:teacher_helper/shared/modelos/opcao_menu.dart';
 
@@ -15,7 +16,7 @@ var routes = <String, WidgetBuilder>{
   '/calendario': (context) => const CalendarioPage(),
   '/planos': (context) => const PlanoAulaPage(),
   '/configuracoes': (context) => const ConfiguracaoPage(),
-  '/procurar': (context) => const ConfiguracaoPage(),
+  '/procurar': (context) => const ProcurarPage(),
   '/fire': (context) => const FirestorePage(),
 };
 

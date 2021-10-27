@@ -10,7 +10,9 @@ import 'package:teacher_helper/shared/widgets/show_dialog.dart';
 import 'editor/plano_editor.dart';
 
 class PlanoCard extends StatefulWidget {
-  const PlanoCard({Key? key, required this.plano}) : super(key: key);
+  const PlanoCard({Key? key, required this.plano, this.isPrivate = true})
+      : super(key: key);
+  final bool isPrivate;
 
   final dynamic plano;
 
@@ -57,26 +59,25 @@ class _PlanoCardState extends State<PlanoCard> {
     );
   }
 
-  var menuItens = [
-    IconMenu('Visualizar', Icons.visibility),
-    IconMenu('Editar', Icons.edit),
-    IconMenu('Duplicar', Icons.copy),
-    IconMenu('Deletar', Icons.delete),
-    IconMenu('Agendar', Icons.event),
-    IconMenu(
-      'Executar Plano',
-      Icons.play_arrow,
-    ),
-  ];
-
   Widget _menu(BuildContext context, data) {
+    var menuItens = [
+      IconMenu('Visualizar', Icons.visibility),
+      IconMenu('Editar', Icons.edit, isPrivate: widget.isPrivate),
+      IconMenu('Duplicar', Icons.copy),
+      IconMenu('Deletar', Icons.delete, isPrivate: widget.isPrivate),
+      IconMenu('Agendar', Icons.event, isPrivate: widget.isPrivate),
+      IconMenu(
+        'Executar Plano',
+        Icons.play_arrow,
+      ),
+    ];
     return PopupMenuButton(
       key: _menuKey,
       child: const Icon(
         Icons.more_vert_outlined,
         size: 30,
       ),
-      itemBuilder: (context) => menuItens.map((e) {
+      itemBuilder: (context) => menuItens.where((e) => e.isPrivate).map((e) {
         return PopupMenuItem(
           value: e.value,
           child: ListTile(
@@ -89,17 +90,19 @@ class _PlanoCardState extends State<PlanoCard> {
         switch (value) {
           case 'Editar':
             Navigator.push(
-              context,
-              MaterialPageRoute(
+                context,
+                MaterialPageRoute(
                   builder: (context) =>
-                      PlanoEditor(plano: transformaDataEmPlano(data, data.id))),
-            );
+                      PlanoEditor(plano: transformaDataEmPlano(data, data.id)),
+                ));
 
             break;
           case 'Visualizar':
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PlanoView(plano: data)),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      PlanoView(plano: data, isPrivate: widget.isPrivate)),
             );
             break;
           case 'Duplicar':
@@ -109,8 +112,6 @@ class _PlanoCardState extends State<PlanoCard> {
                   builder: (context) =>
                       PlanoEditor(plano: transformaDataEmPlano(data, null))),
             );
-            // openPage(
-            //     context, PlanoEditor(plano: transformaDataEmPlano(data, null)));
             break;
           case 'Deletar':
             showAlert(

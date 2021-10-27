@@ -45,10 +45,10 @@ Vídeo com o resultado da primeira entrega está no [YouTube](https://www.youtub
 ## Segunda Entrega
 - Planos de Aula;
     - Visualizar Lista de Planos de Aulas;
-    - Criar e Editar as Turmas;
-- Atividades;
-- Busca;
-- Play;
+    - Criar, Duplicar e Editar os Planos de Aula;
+    - Gerar um Docx com o plano de aula;
+- Buscar Planos de Aulas de outros usuários;
+- Play - Um cronômetro para as atividades de um plano;
 
 # Metodologia de Desenvolvimento
 

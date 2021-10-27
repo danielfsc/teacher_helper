@@ -13,6 +13,11 @@ class OpcaoMenu {
 class IconMenu {
   final String value;
   final IconData icon;
+  final bool isPrivate;
 
-  IconMenu(this.value, this.icon);
+  IconMenu(
+    this.value,
+    this.icon, {
+    this.isPrivate = true,
+  });
 }
