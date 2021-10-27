@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:teacher_helper/Pages/turmas/turma_editor/ajusta_hora.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/color_picker.dart';
@@ -20,6 +23,7 @@ class TurmaEditor extends StatefulWidget {
 class _TurmaEditorState extends State<TurmaEditor> {
   Turma? _turma;
 
+  bool _isLoading = false;
   CollectionReference turmas = FirebaseFirestore.instance
       .collection('usuarios/${AppController.instance.user.email!}/turmas');
 
@@ -67,6 +71,7 @@ class _TurmaEditorState extends State<TurmaEditor> {
               spacing: 20,
               runSpacing: 20,
               children: [
+                const SizedBox(height: 0),
                 TextFormField(
                   decoration: _decoration('Nome da Turma*'),
                   controller: _nome,
@@ -77,10 +82,7 @@ class _TurmaEditorState extends State<TurmaEditor> {
                     return null;
                   },
                 ),
-                TextFormField(
-                  decoration: _decoration('Escola'),
-                  controller: _escola,
-                ),
+                _escolaField(),
                 TextFormField(
                   decoration: _decoration('Disciplina'),
                   controller: _disciplina,
@@ -184,6 +186,64 @@ class _TurmaEditorState extends State<TurmaEditor> {
     );
   }
 
+  Widget _escolaField() {
+    return TypeAheadField<String?>(
+      textFieldConfiguration: TextFieldConfiguration(
+        controller: _escola,
+        decoration: _decoration('Escola', suffixIcon: const Icon(Icons.search)),
+      ),
+      suggestionsCallback: procuraEscola,
+      itemBuilder: (context, String? suggestion) {
+        return ListTile(
+          title: Text(suggestion ?? ''),
+        );
+      },
+      onSuggestionSelected: (String? suggestion) {
+        _escola.text = suggestion!;
+      },
+      noItemsFoundBuilder: (context) {
+        return Center(
+          child: SizedBox(
+            height: 60,
+            child: _isLoading
+                ? const CircularProgressIndicator()
+                : Text(
+                    _escola.text.length > 5
+                        ? 'Nenhuma escola com esse nome'
+                        : 'Digite mais para procurar',
+                    style: const TextStyle(fontSize: 24),
+                  ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<List<String>> procuraEscola(String nome) async {
+    if (nome.length > 5) {
+      try {
+        _isLoading = true;
+        final url = Uri.parse(
+            'http://educacao.dadosabertosbr.com/api/escolas?nome=$nome');
+        final response = await http.get(url);
+        final converted = jsonDecode(response.body);
+
+        final List<String> filtered = converted[1]
+            .map((e) {
+              return e['nome'];
+            })
+            .cast<String>()
+            .toList();
+
+        _isLoading = false;
+        return filtered;
+      } catch (e) {
+        return ['Tive um problema com a rede! \nContinue digitando.'];
+      }
+    }
+    return [];
+  }
+
   void _salvaTurma(context) {
     Turma turma = Turma(
       nome: _nome.text,
@@ -241,8 +301,9 @@ class _TurmaEditorState extends State<TurmaEditor> {
     return fim - inicio;
   }
 
-  InputDecoration _decoration(String label) {
+  InputDecoration _decoration(String label, {Widget? suffixIcon}) {
     return InputDecoration(
+      suffix: suffixIcon,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(5.0),
       ),

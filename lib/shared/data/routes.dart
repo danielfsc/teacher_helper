@@ -15,16 +15,18 @@ var routes = <String, WidgetBuilder>{
   '/calendario': (context) => const CalendarioPage(),
   '/planos': (context) => const PlanoAulaPage(),
   '/configuracoes': (context) => const ConfiguracaoPage(),
+  '/procurar': (context) => const ConfiguracaoPage(),
   '/fire': (context) => const FirestorePage(),
 };
 
 List<OpcaoMenu> opcoes = [
-  // OpcaoMenu(Icons.fireplace, 'Teste FireStore', '/fire', true, Colors.green),
   OpcaoMenu(Icons.school, 'Turmas', '/turmas', true, Colors.blueAccent),
   OpcaoMenu(Icons.event, 'Calendário', '/calendario', true, Colors.red),
   OpcaoMenu(Icons.menu_book, 'Planos de Aula', '/planos', true, Colors.orange),
-  OpcaoMenu(Icons.search, 'Procurar', '/procurar', false, Colors.green),
-  // OpcaoMenu(Icons.category, 'Atividades', '/atividades', false, Colors.indigo),
+  OpcaoMenu(Icons.search, 'Procurar', '/procurar', true, Colors.green),
   OpcaoMenu(
       Icons.settings, 'Configuraçoes', '/configuracoes', true, Colors.indigo),
 ];
+
+  // OpcaoMenu(Icons.category, 'Atividades', '/atividades', false, Colors.indigo),
+  // OpcaoMenu(Icons.fireplace, 'Teste FireStore', '/fire', true, Colors.green),

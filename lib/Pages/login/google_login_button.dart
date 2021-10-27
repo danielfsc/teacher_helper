@@ -35,15 +35,18 @@ class _GoogleLoginButtonState extends State<GoogleLoginButton> {
                 setState(() {
                   _isSigningIn = true;
                 });
-                User? user =
-                    await Authentication.signInWithGoogle(context: context);
+                try {
+                  User? user =
+                      await Authentication.signInWithGoogle(context: context);
+                  setState(() {
+                    _isSigningIn = false;
+                  });
 
-                setState(() {
-                  _isSigningIn = false;
-                });
-
-                if (user != null) {
-                  Authentication.setUserAndGoToHome(context, user);
+                  if (user != null) {
+                    Authentication.setUserAndGoToHome(context, user);
+                  }
+                } catch (e) {
+                  return;
                 }
               },
               child: Padding(
