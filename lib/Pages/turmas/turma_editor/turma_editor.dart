@@ -9,6 +9,7 @@ import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/widgets/color_picker.dart';
 import 'package:teacher_helper/shared/data/datas.dart';
 import 'package:teacher_helper/shared/modelos/turma_model.dart';
+import 'package:teacher_helper/shared/widgets/empty_loading.dart';
 
 class TurmaEditor extends StatefulWidget {
   const TurmaEditor({Key? key, this.turma, this.docId}) : super(key: key);
@@ -206,7 +207,7 @@ class _TurmaEditorState extends State<TurmaEditor> {
           child: SizedBox(
             height: 60,
             child: _isLoading
-                ? const CircularProgressIndicator()
+                ? loading()
                 : Text(
                     _escola.text.length > 5
                         ? 'Nenhuma escola com esse nome'

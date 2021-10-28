@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/controllers/authentication.dart';
+import 'package:teacher_helper/shared/widgets/empty_loading.dart';
 
 // import '../user_info_screen.dart';
 
@@ -19,9 +20,7 @@ class _GoogleLoginButtonState extends State<GoogleLoginButton> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: _isSigningIn
-          ? const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            )
+          ? loading()
           : OutlinedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.white),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/controllers/authentication.dart';
 import 'package:teacher_helper/shared/data/routes.dart';
+import 'package:teacher_helper/shared/widgets/empty_loading.dart';
 
 import 'modelos/opcao_menu.dart';
 
@@ -74,8 +75,7 @@ class _MenuPageState extends State<MenuPage> {
                 child: CachedNetworkImage(
                   fit: BoxFit.fitHeight,
                   imageUrl: _user.photoURL!,
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
+                  placeholder: (context, url) => loading(),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
@@ -138,9 +138,7 @@ class _MenuPageState extends State<MenuPage> {
 
   Widget _botaoSair() {
     if (_estaSaindo) {
-      return const CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-      );
+      return loading();
     }
     return ListTile(
       leading: Icon(

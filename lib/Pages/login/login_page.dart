@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/login/google_login_button.dart';
 import 'package:teacher_helper/controllers/authentication.dart';
+import 'package:teacher_helper/shared/widgets/empty_loading.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -78,11 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                         ConnectionState.done) {
                       return const GoogleLoginButton();
                     }
-                    return const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Colors.orange,
-                      ),
-                    );
+                    return loading();
                   },
                 ),
               ],

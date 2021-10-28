@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/plano_aula/plano_card.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
+import 'package:teacher_helper/shared/widgets/empty_loading.dart';
 
 class ProcurarBody extends StatefulWidget {
   const ProcurarBody({Key? key}) : super(key: key);
@@ -46,9 +47,9 @@ class _ProcurarBodyState extends State<ProcurarBody> {
               );
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Padding(
-                padding: EdgeInsets.fromLTRB(8, 16, 8, 8),
-                child: CircularProgressIndicator(),
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
+                child: loading(),
               );
             }
             if (!snapshot.hasData) {
@@ -93,7 +94,7 @@ class _ProcurarBodyState extends State<ProcurarBody> {
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (!snapshot.hasData) {
-            return const CircularProgressIndicator();
+            return loading();
           } else if (snapshot.data.docs.length == 0) {
             return const Text(
                 'Ainda não temos planos no nosso sistema. \nSeja o primeiro a contribuir com a comunidade.');
