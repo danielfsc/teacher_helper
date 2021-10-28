@@ -20,6 +20,7 @@ class _PlanoAulaBodyState extends State<PlanoAulaBody> {
     return StreamBuilder(
       stream: planos
           .where('userMail', isEqualTo: AppController.instance.user.email)
+          .orderBy('titulo')
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (!snapshot.hasData) {

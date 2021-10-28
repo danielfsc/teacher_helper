@@ -6,6 +6,7 @@ class Turma {
   String nome;
   String? escola;
   String? disciplina;
+  List<dynamic>? eventosPlanos;
   int cor;
   List<DiaAula> dias = [];
 
@@ -15,20 +16,29 @@ class Turma {
     this.escola,
     this.disciplina,
     required this.dias,
-  });
+    this.eventosPlanos,
+  }) {
+    eventosPlanos = eventosPlanos ?? [];
+  }
 
   factory Turma.fromJson(json) {
     List<DiaAula> dias = [];
+
     json['dias'].forEach((element) {
       dias.add(DiaAula.fromJson(element));
     });
+
     int color = json['cor'] ?? 4283215696;
+
+    var eventos = (json.data() as dynamic)['eventosPlanos'] ?? [];
+
     return Turma(
       cor: color,
       nome: json["nome"],
       escola: json["escola"],
       disciplina: json["disciplina"],
       dias: dias,
+      eventosPlanos: eventos,
     );
   }
 
@@ -38,6 +48,7 @@ class Turma {
       'cor': cor,
       'escola': escola,
       'disciplina': disciplina,
+      'eventosPlanos': eventosPlanos,
       'dias': dias.map((value) => value.toJson()).toList(growable: false),
     };
   }

@@ -26,7 +26,7 @@ A nossa proposta principal, é criar um aplicativo onde professores podem fazer 
     - Gerenciador de objetivos de aprendizagem: Você cria uma lista de objetivos que podem ser aproveitados em outros planos;
     - Campos da turma podem ser puxados automaticamente das suas turmas;
     - Os planos de aula públicos podem receber comentários de outros professores. Assim, podem discutir e melhorar seus planos de aulas.
-    - Gerar um PDF com o plano pronto.
+    - Gerar um DOCX com o plano pronto.
 
 - Atividades e Recursos extras: É comum que dentro do plano de aula haja atividades especiais que exijam mais detalhamentos e recursos (textos, vídeos etc), aqui o professor irá registrar essas atividades e recursos.
 
@@ -49,6 +49,35 @@ Vídeo com o resultado da primeira entrega está no [YouTube](https://www.youtub
     - Gerar um Docx com o plano de aula;
 - Buscar Planos de Aulas de outros usuários;
 - Play - Um cronômetro para as atividades de um plano;
+
+Vídeo com o resultado da segunda entrega está no [YouTube](https://youtu.be/O0XgPGKAkVc).
+
+
+
+# Resultado do que foi entregue
+
+- Turmas: Um sistema para cadastrar as turmas, horários e locais que o professor irá atuar;
+- Calendário: Calendário com os horários de aula do professor, eventos escolares e a possibilidade de vincular um plano de aula a uma data e turma específica;
+    - ~~Calendário (extra): Integrar ao Google Calendar~~.
+- Busca: Um sistema de pesquisa onde o professor pode encontrar planos de aula criados por outros professores;
+    - Busca por disciplinas (Física, Química etc);
+    - ~~Busca por objetivos pedagógicos (Leis de Newton, Equação do Segundo Grau etc)~~;
+    - ~~Busca por tipo de metodologias (Peer Instruction, Sala de Aula Invertida etc)~~;
+- Planos de Aula: Um sistema onde o professor pode criar seu plano de aula, atribuir a uma data e turma, torná-lo público para outros professores;
+    - ~~Guia de como criar um plano de aula;~~
+    - Duração da aula calculado automáticamente;
+    - Compartilhamento: Deixar público para outros usuários e compartilhar com colega para editar ou só visualizar/copiar;
+    - ~~Gerenciador de objetivos de aprendizagem: Você cria uma lista de objetivos que podem ser aproveitados em outros planos~~;
+    - ~~Campos da turma podem ser puxados automaticamente das suas turmas;~~
+    - ~~Os planos de aula públicos podem receber comentários de outros professores. Assim, podem discutir e melhorar seus planos de aulas;~~
+    - Gerar um DOCX com o plano pronto.
+
+- ~~Atividades e Recursos extras: É comum que dentro do plano de aula haja atividades especiais que exijam mais detalhamentos e recursos (textos, vídeos etc), aqui o professor irá registrar essas atividades e recursos.~~
+
+- Play: Um sistema de cronômetro que mostra para o professor cada momento de sua aula e um cronômetro para que ele possa se orientar.
+
+
+
 
 # Metodologia de Desenvolvimento
 

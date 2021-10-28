@@ -341,7 +341,7 @@ class _PlanoExecutarState extends State<PlanoExecutar> {
 
   Widget verticalButton({required IconData icon, required int step}) {
     return InkWell(
-      splashColor: Colors.blue.withAlpha(30),
+      // splashColor: Colors.blue.withAlpha(30),
       onTap: () {
         changeIndex(step);
       },

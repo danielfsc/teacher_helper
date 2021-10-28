@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:teacher_helper/Pages/turmas/turma_editor/ajusta_hora.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
-import 'package:teacher_helper/shared/color_picker.dart';
+import 'package:teacher_helper/shared/widgets/color_picker.dart';
 import 'package:teacher_helper/shared/data/datas.dart';
 import 'package:teacher_helper/shared/modelos/turma_model.dart';
 
@@ -254,7 +254,7 @@ class _TurmaEditorState extends State<TurmaEditor> {
     );
     if (widget.docId != null) {
       log('Deveria editar a turma');
-      turmas.doc(widget.docId).set(turma.toJson());
+      turmas.doc(widget.docId).update(turma.toJson());
     } else {
       log('Vou adicionar nova turma');
       turmas.add(turma.toJson());

@@ -30,11 +30,12 @@ class HomeBody extends StatelessWidget {
   Widget logoutCard(context) {
     return Card(
       child: AbsorbPointer(
+        absorbing: false,
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () async {
             await Authentication.signOut(context: context);
-            // Navigator.of(context).popAndPushNamed(info.route);
+            Navigator.of(context).popAndPushNamed('/');
           },
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.35,
