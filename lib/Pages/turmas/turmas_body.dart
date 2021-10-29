@@ -1,7 +1,5 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:teacher_helper/Pages/turmas/turma_card.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/modelos/turma_model.dart';
 import 'package:teacher_helper/shared/widgets/empty_loading.dart';
@@ -38,22 +36,12 @@ class _TurmasBodyState extends State<TurmasBody> {
     );
   }
 
-  void _delete(String documentId) async {
-    await turmas.doc(documentId).delete();
-    log('Deletei o documento $documentId');
-    setState(() {});
-  }
-
   Widget _listaTurmas(List data) {
     List<Turma> turmas = data.map((e) => Turma.fromJson(e)).toList();
     return ListView.builder(
         itemCount: turmas.length,
         itemBuilder: (context, index) {
-          return TurmasCard(
-            turma: turmas[index],
-            docId: data[index].id,
-            onDelete: (String documentId) => _delete(documentId),
-          );
+          return turmas[index].card(context);
         });
   }
 }

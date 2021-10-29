@@ -14,6 +14,13 @@ class AppController extends ChangeNotifier {
     return _user!;
   }
 
+  String get email {
+    if (_user != null) {
+      return _user!.email ?? '';
+    }
+    return '';
+  }
+
   set user(User? user) {
     _user = user;
   }

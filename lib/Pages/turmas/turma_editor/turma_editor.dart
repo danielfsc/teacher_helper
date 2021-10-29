@@ -1,21 +1,22 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:teacher_helper/Pages/turmas/turma_editor/ajusta_hora.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
+import 'package:teacher_helper/shared/modelos/escola_model.dart';
 import 'package:teacher_helper/shared/widgets/color_picker.dart';
 import 'package:teacher_helper/shared/data/datas.dart';
 import 'package:teacher_helper/shared/modelos/turma_model.dart';
 import 'package:teacher_helper/shared/widgets/empty_loading.dart';
+import 'package:teacher_helper/shared/widgets/snack_message.dart';
 
 class TurmaEditor extends StatefulWidget {
-  const TurmaEditor({Key? key, this.turma, this.docId}) : super(key: key);
+  const TurmaEditor({Key? key, this.turma}) : super(key: key);
 
   final Turma? turma;
-  final String? docId;
+  // final String? docId;
 
   @override
   State<TurmaEditor> createState() => _TurmaEditorState();
@@ -41,7 +42,7 @@ class _TurmaEditorState extends State<TurmaEditor> {
   @override
   void initState() {
     super.initState();
-    if (widget.docId != null) {
+    if (widget.turma != null) {
       _turma = widget.turma;
       _nome.text = _turma!.nome;
       _escola.text = _turma!.escola ?? '';
@@ -73,112 +74,13 @@ class _TurmaEditorState extends State<TurmaEditor> {
               runSpacing: 20,
               children: [
                 const SizedBox(height: 0),
-                TextFormField(
-                  decoration: _decoration('Nome da Turma*'),
-                  controller: _nome,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, dê um nome para a turma';
-                    }
-                    return null;
-                  },
-                ),
+                _tituloField(),
                 _escolaField(),
-                TextFormField(
-                  decoration: _decoration('Disciplina'),
-                  controller: _disciplina,
-                ),
-                ColorPicker(
-                  onSelectColor: (Color color) {
-                    _cor = color.value;
-                  },
-                  initialColor: Color(_cor),
-                ),
-                InputDecorator(
-                  decoration: _decoration('Adicionar Aula'),
-                  child: Wrap(
-                    direction: Axis.horizontal,
-                    alignment: WrapAlignment.spaceEvenly,
-                    children: [
-                      DropdownButton<Semana>(
-                        value: _diaSelecionado,
-                        onChanged: (Semana? newvalue) {
-                          setState(() {
-                            _diaSelecionado = newvalue;
-                          });
-                        },
-                        items: Semana.values.map((Semana dia) {
-                          return DropdownMenuItem<Semana>(
-                            value: dia,
-                            child: Text(dia.longo),
-                          );
-                        }).toList(),
-                      ),
-                      AjustaHora(
-                        title: 'Início',
-                        time: intervalo['inicio']!,
-                        onChange: (TimeOfDay value) {
-                          setState(() {
-                            intervalo['inicio'] = value;
-                          });
-                        },
-                      ),
-                      AjustaHora(
-                        title: 'Fim',
-                        time: intervalo['fim']!,
-                        onChange: (TimeOfDay value) {
-                          setState(() {
-                            intervalo['fim'] = value;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        onPressed: () => _adicionaDias(),
-                        icon: const Icon(Icons.add),
-                      ),
-                    ],
-                  ),
-                ),
-                InputDecorator(
-                  decoration: _decoration('Dias de Aula'),
-                  child: ListView(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    children: dias.map((d) {
-                      var indice = dias.indexOf(d);
-                      return Card(
-                        child: ListTile(
-                          title: Text(d.dia.extenso),
-                          subtitle: Text(d.intervalo(context)),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              _removeDias(indice);
-                            },
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Cancelar'),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        _salvaTurma(context);
-                      },
-                      child: const Text('Salvar'),
-                    ),
-                  ],
-                ),
+                _disciplinaField(),
+                _colorsField(),
+                _aulasSetter(),
+                _aulasList(),
+                _botoes(),
               ],
             ),
           ),
@@ -187,20 +89,41 @@ class _TurmaEditorState extends State<TurmaEditor> {
     );
   }
 
+  Widget _tituloField() {
+    return TextFormField(
+      decoration: _decoration('Nome da Turma*'),
+      controller: _nome,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Por favor, dê um nome para a turma';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _disciplinaField() {
+    return TextFormField(
+      decoration: _decoration('Disciplina'),
+      controller: _disciplina,
+    );
+  }
+
   Widget _escolaField() {
-    return TypeAheadField<String?>(
+    return TypeAheadField(
       textFieldConfiguration: TextFieldConfiguration(
         controller: _escola,
         decoration: _decoration('Escola', suffixIcon: const Icon(Icons.search)),
       ),
       suggestionsCallback: procuraEscola,
-      itemBuilder: (context, String? suggestion) {
+      itemBuilder: (context, Escola suggestion) {
         return ListTile(
-          title: Text(suggestion ?? ''),
+          title: Text(suggestion.nome),
+          subtitle: Text('${suggestion.cidade}/${suggestion.estado}'),
         );
       },
-      onSuggestionSelected: (String? suggestion) {
-        _escola.text = suggestion!;
+      onSuggestionSelected: (Escola suggestion) {
+        _escola.text = suggestion.nome;
       },
       noItemsFoundBuilder: (context) {
         return Center(
@@ -220,67 +143,156 @@ class _TurmaEditorState extends State<TurmaEditor> {
     );
   }
 
-  Future<List<String>> procuraEscola(String nome) async {
+  Widget _colorsField() {
+    return ColorPicker(
+      onSelectColor: (Color color) {
+        _cor = color.value;
+      },
+      initialColor: Color(_cor),
+    );
+  }
+
+  Widget _aulasSetter() {
+    return InputDecorator(
+      decoration: _decoration('Adicionar Aula'),
+      child: Wrap(
+        direction: Axis.horizontal,
+        alignment: WrapAlignment.spaceEvenly,
+        children: [
+          DropdownButton<Semana>(
+            value: _diaSelecionado,
+            onChanged: (Semana? newvalue) {
+              setState(() {
+                _diaSelecionado = newvalue;
+              });
+            },
+            items: Semana.values.map((Semana dia) {
+              return DropdownMenuItem<Semana>(
+                value: dia,
+                child: Text(dia.longo),
+              );
+            }).toList(),
+          ),
+          AjustaHora(
+            title: 'Início',
+            time: intervalo['inicio']!,
+            onChange: (TimeOfDay value) {
+              setState(() {
+                intervalo['inicio'] = value;
+              });
+            },
+          ),
+          AjustaHora(
+            title: 'Fim',
+            time: intervalo['fim']!,
+            onChange: (TimeOfDay value) {
+              setState(() {
+                intervalo['fim'] = value;
+              });
+            },
+          ),
+          IconButton(
+            onPressed: () => _adicionaDia(),
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _aulasList() {
+    return InputDecorator(
+      decoration: _decoration('Dias de Aula'),
+      child: ListView(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        children: dias.map((d) {
+          var indice = dias.indexOf(d);
+          return Card(
+            child: ListTile(
+              title: Text(d.dia.extenso),
+              subtitle: Text(d.intervalo(context)),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  setState(() {
+                    dias.removeAt(indice);
+                  });
+                },
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _botoes() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Cancelar'),
+        ),
+        const SizedBox(
+          width: 40,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              _salvaTurma(context);
+            }
+          },
+          child: const Text('Salvar'),
+        ),
+      ],
+    );
+  }
+
+  Future<List<Escola>> procuraEscola(String nome) async {
     if (nome.length > 5) {
       try {
         _isLoading = true;
+
         final url = Uri.parse(
             'http://educacao.dadosabertosbr.com/api/escolas?nome=$nome');
-        final response = await http.get(url);
-        final converted = jsonDecode(response.body);
 
-        final List<String> filtered = converted[1]
-            .map((e) {
-              return e['nome'];
-            })
-            .cast<String>()
-            .toList();
+        final response = await http.get(url);
+
+        final converted = jsonDecode(response.body);
+        final List<Escola> filtered = [];
+
+        for (var escola in converted[1]) {
+          filtered.add(Escola.fromJson(escola));
+        }
 
         _isLoading = false;
+
         return filtered;
       } catch (e) {
-        return ['Tive um problema com a rede! \nContinue digitando.'];
+        return [];
       }
     }
     return [];
   }
 
-  void _salvaTurma(context) {
+  Future<void> _salvaTurma(context) async {
     Turma turma = Turma(
+      docId: widget.turma != null ? widget.turma!.docId : null,
       nome: _nome.text,
       cor: _cor,
       escola: _escola.text,
       disciplina: _disciplina.text,
+      eventosPlanos: widget.turma != null ? widget.turma!.eventosPlanos : [],
       dias: dias,
     );
-    if (widget.docId != null) {
-      log('Deveria editar a turma');
-      turmas.doc(widget.docId).update(turma.toJson());
-    } else {
-      log('Vou adicionar nova turma');
-      turmas.add(turma.toJson());
-    }
-
-    Navigator.of(context).pop(true);
+    await turma.save();
+    Navigator.pop(context, true);
   }
 
-  void _snackMessage(String message, {Color? color}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: color,
-      ),
-    );
-  }
-
-  _removeDias(int indice) {
-    setState(() {
-      dias.removeAt(indice);
-    });
-  }
-
-  _adicionaDias() {
-    if (inicioFimOK()) {
+  _adicionaDia() {
+    if (_fimMaiorQueInicio()) {
       setState(() {
         dias.add(DiaAula(
             dia: _diaSelecionado!,
@@ -291,12 +303,18 @@ class _TurmaEditorState extends State<TurmaEditor> {
       });
       return null;
     }
-    _snackMessage(
-        'O horário de início da aula deve ser antes do final da aula!',
-        color: Colors.red);
+    snackMessage(
+      context,
+      message: 'O horário de início da aula deve ser antes do final da aula!',
+      color: Colors.red,
+    );
   }
 
-  int calculaDuracao() {
+  bool _fimMaiorQueInicio() {
+    return _calculaDuracao() >= 0;
+  }
+
+  int _calculaDuracao() {
     var inicio = intervalo['inicio']!.hour * 60 + intervalo['inicio']!.minute;
     var fim = intervalo['fim']!.hour * 60 + intervalo['fim']!.minute;
     return fim - inicio;
@@ -310,9 +328,5 @@ class _TurmaEditorState extends State<TurmaEditor> {
       ),
       labelText: label,
     );
-  }
-
-  bool inicioFimOK() {
-    return calculaDuracao() >= 0;
   }
 }
