@@ -6,8 +6,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share/share.dart';
 import 'package:teacher_helper/shared/data/nivel_escolar.dart';
+import 'package:teacher_helper/shared/modelos/plano_model.dart';
 
-Future<bool> geraPlano(plano) async {
+Future<bool> geraPlano(PlanoAula plano) async {
   if (await Permission.storage.request() == PermissionStatus.granted) {
     final data = await rootBundle.load('assets/template_plano.docx');
     final bytes = data.buffer.asUint8List();
@@ -16,32 +17,32 @@ Future<bool> geraPlano(plano) async {
 
     Content c = Content();
 
-    c.add(TextContent('disciplina', plano['disciplina']));
-    c.add(TextContent('nivel', nivelEnsino.values[plano['nivel']].extenso));
-    c.add(TextContent('preparacao', plano['preparacao']));
+    c.add(TextContent('disciplina', plano.disciplina));
+    c.add(TextContent('nivel', nivelEnsino.values[plano.nivel].extenso));
+    c.add(TextContent('preparacao', plano.preparacao));
 
     c.add(ListContent(
         'recursos',
-        plano['recursos']
+        plano.recursos
             .map((obj) => TextContent('recurso', obj))
             .toList()
             .cast<Content>()));
     c.add(ListContent(
         'conteudos',
-        plano['conteudos']
+        plano.conteudos
             .map((obj) => TextContent('conteudo', obj))
             .toList()
             .cast<Content>()));
     c.add(ListContent(
         'objetivos',
-        plano['objetivos']
+        plano.objetivos
             .map((obj) => TextContent('objetivo', obj))
             .toList()
             .cast<Content>()));
 
     c.add(TableContent(
         'atividades',
-        plano['atividades']
+        plano.atividades
             .map((atividade) => RowContent()
               ..add(TextContent('duracao', atividade['duracao']))
               ..add(TextContent('titulo', atividade['titulo']))
@@ -50,7 +51,7 @@ Future<bool> geraPlano(plano) async {
             .cast<RowContent>()));
     c.add(ListContent(
         'bibliografias',
-        plano['bibliografias']
+        plano.bibliografias
             .map((obj) => TextContent('bibliografia', obj))
             .toList()
             .cast<Content>()));
@@ -64,8 +65,7 @@ Future<bool> geraPlano(plano) async {
     } else {
       return false;
     }
-    Share.shareFiles([caminho], text: 'Plano de Aula: ${plano['titulo']}');
-
+    Share.shareFiles([caminho], text: 'Plano de Aula: ${plano.titulo}');
     return true;
   } else {
     return false;

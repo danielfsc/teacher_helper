@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 
 class AjustaHora extends StatefulWidget {
@@ -10,7 +8,7 @@ class AjustaHora extends StatefulWidget {
     this.time,
   }) : super(key: key);
 
-  TimeOfDay? time;
+  final TimeOfDay? time;
   final Function(TimeOfDay) onChange;
   final String title;
 
@@ -19,6 +17,14 @@ class AjustaHora extends StatefulWidget {
 }
 
 class _AjustaHoraState extends State<AjustaHora> {
+  TimeOfDay? time;
+
+  @override
+  void initState() {
+    time = widget.time;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -31,7 +37,7 @@ class _AjustaHoraState extends State<AjustaHora> {
               borderRadius: BorderRadius.circular(5.0),
             ),
           ),
-          child: Text('${widget.time!.hour}:${fixMinute(widget.time!.minute)}'),
+          child: Text('${time!.hour}:${fixMinute(time!.minute)}'),
         ),
       ),
       onTap: () {
@@ -43,14 +49,14 @@ class _AjustaHoraState extends State<AjustaHora> {
   _selectTime(BuildContext context) async {
     final TimeOfDay? timeOfDay = await showTimePicker(
       context: context,
-      initialTime: widget.time!,
+      initialTime: time!,
       initialEntryMode: TimePickerEntryMode.dial,
     );
-    if (timeOfDay != null && timeOfDay != widget.time) {
+    if (timeOfDay != null && timeOfDay != time) {
       setState(() {
-        widget.time = timeOfDay;
+        time = timeOfDay;
       });
-      widget.onChange(widget.time!);
+      widget.onChange(time!);
     }
   }
 }

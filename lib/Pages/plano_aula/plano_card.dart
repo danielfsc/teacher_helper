@@ -2,23 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:teacher_helper/Pages/calendario/calendario_picker.dart';
-import 'package:teacher_helper/Pages/plano_aula/executar/plano_executar.dart';
-import 'package:teacher_helper/Pages/plano_aula/visualizar/plano_view.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/modelos/opcao_menu.dart';
 import 'package:teacher_helper/shared/modelos/plano_model.dart';
 import 'package:teacher_helper/shared/modelos/turma_model.dart';
 import 'package:teacher_helper/shared/widgets/display_utils.dart';
-import 'package:teacher_helper/shared/widgets/show_dialog.dart';
-
-import 'editor/plano_editor.dart';
 
 class PlanoCard extends StatefulWidget {
   const PlanoCard({Key? key, required this.plano, this.isPrivate = true})
       : super(key: key);
   final bool isPrivate;
 
-  final dynamic plano;
+  final PlanoAula plano;
 
   @override
   State<PlanoCard> createState() => _PlanoCardState();
@@ -57,13 +52,13 @@ class _PlanoCardState extends State<PlanoCard> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        boldText(plano['titulo']),
+        boldText(plano.titulo),
         _menu(context, plano),
       ],
     );
   }
 
-  Widget _menu(BuildContext context, data) {
+  Widget _menu(BuildContext context, PlanoAula plano) {
     var menuItens = [
       IconMenu('Visualizar', Icons.visibility),
       IconMenu('Editar', Icons.edit, isPrivate: widget.isPrivate),
@@ -93,51 +88,19 @@ class _PlanoCardState extends State<PlanoCard> {
       onSelected: (value) async {
         switch (value) {
           case 'Editar':
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      PlanoEditor(plano: transformaDataEmPlano(data, data.id)),
-                ));
-
+            plano.edit(context);
             break;
           case 'Visualizar':
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      PlanoView(plano: data, isPrivate: widget.isPrivate)),
-            );
+            plano.view(context, isPrivate: widget.isPrivate);
             break;
           case 'Duplicar':
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      PlanoEditor(plano: transformaDataEmPlano(data, null))),
-            );
-            break;
-          case 'Deletar':
-            showAlert(
-              context,
-              title: 'Deletar Plano de Aula',
-              message: 'Essa ação não pode ser desfeita.\n Tem certeza?',
-              cancelTitle: 'CANCELAR',
-            ).then((value) {
-              if (value) {
-                setState(() {
-                  _deletePlano(data.id);
-                });
-              }
-            });
+            plano.duplicate(context);
             break;
           case 'Executar Plano':
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PlanoExecutar(
-                      plano: transformaDataEmPlano(data, data.id))),
-            );
+            plano.execute(context);
+            break;
+          case 'Deletar':
+            plano.destroy(context);
             break;
           case 'Agendar':
             CalendarTapDetails? evento = await Navigator.push(
@@ -147,7 +110,6 @@ class _PlanoCardState extends State<PlanoCard> {
             if (evento != null) {
               await _registraPlanoATurma(evento.appointments![0]);
             }
-            // print(evento.appointments);
             break;
         }
       },
@@ -165,8 +127,8 @@ class _PlanoCardState extends State<PlanoCard> {
     );
 
     turma.eventosPlanos!.add({
-      'planoId': widget.plano.id,
-      'planoTitulo': widget.plano['titulo'],
+      'planoId': widget.plano.docId,
+      'planoTitulo': widget.plano.titulo,
       'startTime': evento.startTime,
       'endTime': evento.endTime,
     });
@@ -187,10 +149,9 @@ class _PlanoCardState extends State<PlanoCard> {
     return Column(
       children: [
         const Divider(),
-        textTitleValue(
-            'Duração: ', '${calculaDuracaoTotal(plano['atividades'])} min'),
+        textTitleValue('Duração: ', '${plano.fullTime()} min'),
         const SizedBox(height: 10),
-        textTitleValue('Disciplina: ', plano['disciplina']),
+        textTitleValue('Disciplina: ', plano.disciplina),
       ],
     );
   }
@@ -205,11 +166,5 @@ class _PlanoCardState extends State<PlanoCard> {
         Text(value),
       ],
     );
-  }
-
-  _deletePlano(id) {
-    CollectionReference planos =
-        FirebaseFirestore.instance.collection('planosaula');
-    planos.doc(id).delete();
   }
 }

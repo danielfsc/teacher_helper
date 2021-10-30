@@ -16,7 +16,6 @@ class TurmaEditor extends StatefulWidget {
   const TurmaEditor({Key? key, this.turma}) : super(key: key);
 
   final Turma? turma;
-  // final String? docId;
 
   @override
   State<TurmaEditor> createState() => _TurmaEditorState();

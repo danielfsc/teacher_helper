@@ -69,7 +69,6 @@ class _CalendarioPickerState extends State<CalendarioPicker> {
       if (await showAlert(
         context,
         title: 'Vincular plano a essa turma?',
-        // message: 'Você deseja adicionar o plano a turma?',
         cancelTitle: 'Não',
         confirmTitle: 'SIM',
       )) {

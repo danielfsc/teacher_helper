@@ -1,33 +1,34 @@
-// import 'dart:developer';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:prompt_dialog/prompt_dialog.dart';
 import 'package:teacher_helper/Pages/plano_aula/editor/plano_atividade_editor.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/data/nivel_escolar.dart';
+import 'package:teacher_helper/shared/modelos/plano_model.dart';
 import 'package:teacher_helper/shared/widgets/show_dialog.dart';
+import 'package:teacher_helper/shared/widgets/snack_message.dart';
 
 class PlanoEditor extends StatefulWidget {
   const PlanoEditor({Key? key, this.plano}) : super(key: key);
 
-  final dynamic plano;
+  final PlanoAula? plano;
 
   @override
   _PlanoEditorState createState() => _PlanoEditorState();
 }
 
 class _PlanoEditorState extends State<PlanoEditor> {
+  PlanoAula plano = PlanoAula.empty();
   final _formKey = GlobalKey<FormState>();
   final _titulo = TextEditingController();
   final _disciplina = TextEditingController();
   final _preparacao = TextEditingController();
-  final Map<String, List<dynamic>> listas = {
+  final Map<String, List<String>> listas = {
     'conteudos': [],
     'objetivos': [],
     'recursos': [],
     'bibliografias': []
   };
-  List<dynamic> atividades = [];
+  List<Map<String, dynamic>> atividades = [];
 
   int nivel = 0;
   bool publico = false;
@@ -36,16 +37,17 @@ class _PlanoEditorState extends State<PlanoEditor> {
   @override
   void initState() {
     if (widget.plano != null) {
-      _titulo.text = widget.plano!['titulo'];
-      _disciplina.text = widget.plano!['disciplina'];
-      _preparacao.text = widget.plano!['preparacao'];
-      listas['conteudos'] = widget.plano!['conteudos'];
-      listas['objetivos'] = widget.plano!['objetivos'];
-      listas['recursos'] = widget.plano!['recursos'];
-      listas['bibliografias'] = widget.plano!['bibliografias'];
-      atividades = widget.plano!['atividades'];
-      nivel = widget.plano!['nivel'];
-      publico = widget.plano!['publico'];
+      plano = widget.plano!;
+      _titulo.text = plano.titulo;
+      _disciplina.text = plano.disciplina ?? '';
+      _preparacao.text = plano.preparacao ?? '';
+      listas['conteudos'] = plano.conteudos;
+      listas['objetivos'] = plano.objetivos;
+      listas['recursos'] = plano.recursos;
+      listas['bibliografias'] = plano.bibliografias;
+      atividades = plano.atividades;
+      nivel = plano.nivel;
+      publico = plano.publico;
     }
     super.initState();
   }
@@ -88,42 +90,9 @@ class _PlanoEditorState extends State<PlanoEditor> {
             runSpacing: 20,
             children: [
               const SizedBox.shrink(),
-              TextFormField(
-                decoration: _decoration('Título*'),
-                controller: _titulo,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'O Título é obrigatório';
-                  }
-                  return null;
-                },
-              ),
-
-              //PUBLICO
-              Container(
-                decoration: boxDecoration,
-                child: SwitchListTile(
-                  value: publico,
-                  title: Text(
-                      'Deixar o plano de aula público? \n${publico ? "SIM" : "NÃO"}'),
-                  onChanged: (value) {
-                    setState(() {
-                      publico = !publico;
-                    });
-                  },
-                ),
-              ),
-              //DISCIPLINA
-              TextFormField(
-                decoration: _decoration('Disciplina ${publico ? "*" : ""}'),
-                controller: _disciplina,
-                validator: (value) {
-                  if (publico && (value == null || value.isEmpty)) {
-                    return "Disciplina é obrigatória para plano público";
-                  }
-                  return null;
-                },
-              ),
+              _tituloField(context),
+              _disciplinaField(context),
+              _publicoSwitch(context),
             ],
           ),
         ),
@@ -133,17 +102,15 @@ class _PlanoEditorState extends State<PlanoEditor> {
             runSpacing: 20,
             spacing: 20,
             children: [
-              _nivel(),
-              //PREPARACAO
-              TextFormField(
-                decoration: _decoration('Preparação para a aula'),
-                controller: _preparacao,
-                maxLines: null,
+              _nivelDropdown(),
+              _preparacaoField(context),
+              _lista(
+                context,
+                'recursos',
+                title: 'Recurso',
+                subtitle:
+                    'Descreva quais serão os recursos necessários para a aula',
               ),
-              _lista(context, 'recursos',
-                  title: 'Recurso',
-                  subtitle:
-                      'Descreva quais serão os recursos necessários para a aula'),
             ],
           ),
         ),
@@ -187,7 +154,49 @@ class _PlanoEditorState extends State<PlanoEditor> {
     borderRadius: BorderRadius.circular(5.0),
   );
 
-  Widget _nivel() {
+  Widget _tituloField(BuildContext context) {
+    return TextFormField(
+      decoration: _decoration('Título*'),
+      controller: _titulo,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'O Título é obrigatório';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _publicoSwitch(BuildContext context) {
+    return Container(
+      decoration: boxDecoration,
+      child: SwitchListTile(
+        value: publico,
+        title: Text(
+            'Deixar o plano de aula público? \n${publico ? "SIM" : "NÃO"}'),
+        onChanged: (value) {
+          setState(() {
+            publico = !publico;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget _disciplinaField(BuildContext context) {
+    return TextFormField(
+      decoration: _decoration('Disciplina ${publico ? "*" : ""}'),
+      controller: _disciplina,
+      validator: (value) {
+        if (publico && (value == null || value.isEmpty)) {
+          return "Disciplina é obrigatória para plano público";
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _nivelDropdown() {
     return Container(
       decoration: boxDecoration,
       child: Padding(
@@ -211,7 +220,15 @@ class _PlanoEditorState extends State<PlanoEditor> {
     );
   }
 
-  Widget _atividades(context) {
+  Widget _preparacaoField(BuildContext context) {
+    return TextFormField(
+      decoration: _decoration('Preparação para a aula'),
+      controller: _preparacao,
+      maxLines: null,
+    );
+  }
+
+  Widget _atividades(BuildContext context) {
     return Container(
       decoration: boxDecoration,
       child: Column(
@@ -262,44 +279,6 @@ class _PlanoEditorState extends State<PlanoEditor> {
     );
   }
 
-  _editaAtividade(context, index, atividade) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => PlanoAtividadeEditor(atividade: atividade)),
-    ).then((value) {
-      if (value != null) {
-        setState(() => atividades[index] = value);
-      }
-    });
-  }
-
-  _deleteAtividade(context, int index) async {
-    showAlert(
-      context,
-      title: 'Deletar Atividade',
-      message: 'Essa ação não pode ser desfeita.\n Tem certeza?',
-      cancelTitle: 'CANCELAR',
-    ).then((value) {
-      if (value) {
-        setState(() {
-          atividades.removeAt(index);
-        });
-      }
-    });
-  }
-
-  _addAtividade(context) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const PlanoAtividadeEditor()),
-    ).then((value) {
-      if (value != null) {
-        setState(() => atividades.add(value));
-      }
-    });
-  }
-
   Widget _lista(context, String list, {String title = '', String? subtitle}) {
     return Container(
       decoration: boxDecoration,
@@ -341,6 +320,73 @@ class _PlanoEditorState extends State<PlanoEditor> {
     );
   }
 
+  _salvaPlano(context) async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        _atualizaPlanoAula();
+        await plano.save();
+        Navigator.of(context).pop();
+      } catch (e) {
+        snackMessage(context,
+            message:
+                'Tive um probelma para salvar. Tente de novo ou fale com os desenvolvedores.',
+            color: Colors.red);
+      }
+    }
+  }
+
+  _atualizaPlanoAula() {
+    plano.titulo = _titulo.text;
+    plano.userMail = AppController.instance.email;
+    plano.disciplina = _disciplina.text.toUpperCase();
+    plano.publico = publico;
+    plano.nivel = nivel;
+    plano.preparacao = _preparacao.text;
+    plano.conteudos = listas['conteudos']!;
+    plano.objetivos = listas['objetivos'] as List<String>;
+    plano.recursos = listas['recursos'] as List<String>;
+    plano.bibliografias = listas['bibliografias'] as List<String>;
+    plano.atividades = atividades;
+  }
+
+  _editaAtividade(context, index, atividade) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => PlanoAtividadeEditor(atividade: atividade)),
+    ).then((value) {
+      if (value != null) {
+        setState(() => atividades[index] = value);
+      }
+    });
+  }
+
+  _deleteAtividade(context, int index) async {
+    showAlert(
+      context,
+      title: 'Deletar Atividade',
+      message: 'Essa ação não pode ser desfeita.\n Tem certeza?',
+      cancelTitle: 'CANCELAR',
+    ).then((value) {
+      if (value) {
+        setState(() {
+          atividades.removeAt(index);
+        });
+      }
+    });
+  }
+
+  _addAtividade(context) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PlanoAtividadeEditor()),
+    ).then((value) {
+      if (value != null) {
+        setState(() => atividades.add(value));
+      }
+    });
+  }
+
   _deleteLista(context, list, title, index) async {
     showAlert(
       context,
@@ -368,35 +414,6 @@ class _PlanoEditorState extends State<PlanoEditor> {
         listas[list]!.add(input);
       }
     });
-  }
-
-  Map<String, dynamic> criaPlanoMap() {
-    return {
-      'userMail': AppController.instance.user.email,
-      'titulo': _titulo.text,
-      'publico': publico,
-      'disciplina': _disciplina.text.toUpperCase(),
-      'nivel': nivel,
-      'preparacao': _preparacao.text,
-      'conteudos': listas['conteudos'],
-      'objetivos': listas['objetivos'],
-      'recursos': listas['recursos'],
-      'atividades': atividades,
-      'bibliografias': listas['bibliografias'],
-    };
-  }
-
-  _salvaPlano(context) {
-    if (_formKey.currentState!.validate()) {
-      CollectionReference plano =
-          FirebaseFirestore.instance.collection('planosaula');
-      if (widget.plano != null && widget.plano!['id'] != null) {
-        plano.doc(widget.plano['id']).set(criaPlanoMap());
-      } else {
-        plano.add(criaPlanoMap());
-      }
-      Navigator.of(context).popAndPushNamed('/planos');
-    }
   }
 
   InputDecoration _decoration(String label) {

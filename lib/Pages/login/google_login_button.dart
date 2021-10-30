@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:teacher_helper/controllers/authentication.dart';
 import 'package:teacher_helper/shared/widgets/empty_loading.dart';
 
-// import '../user_info_screen.dart';
-
 class GoogleLoginButton extends StatefulWidget {
   const GoogleLoginButton({Key? key}) : super(key: key);
 

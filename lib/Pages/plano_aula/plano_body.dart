@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/plano_aula/plano_card.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
+import 'package:teacher_helper/shared/modelos/plano_model.dart';
 import 'package:teacher_helper/shared/widgets/empty_loading.dart';
 
 class PlanoAulaBody extends StatefulWidget {
@@ -39,7 +40,7 @@ class _PlanoAulaBodyState extends State<PlanoAulaBody> {
       child: ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, index) {
-          var plano = data[index];
+          PlanoAula plano = PlanoAula.fromJson(data[index]);
           return PlanoCard(plano: plano);
         },
       ),

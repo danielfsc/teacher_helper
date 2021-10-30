@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:teacher_helper/Pages/turmas/turma_card.dart';
 import 'package:teacher_helper/Pages/turmas/turma_editor/turma_editor.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/data/datas.dart';
+import 'package:teacher_helper/shared/modelos/plano_model.dart';
 import 'package:teacher_helper/shared/widgets/show_dialog.dart';
 
 class Turma {
@@ -107,6 +109,31 @@ class Turma {
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  Future<void> addEventoPlano(PlanoAula plano, Appointment appointment) async {
+    eventosPlanos!.add({
+      'planoId': plano.docId,
+      'planoTitulo': plano.titulo,
+      'startTime': appointment.startTime,
+      'endTime': appointment.endTime,
+    });
+    await save();
+  }
+
+  Future<void> removeEventoPlano(Appointment evento) async {
+    String planoId = (evento.resourceIds![0] as Map)['docId'];
+    DateTime startTime = (evento.startTime);
+
+    int index = eventosPlanos!.indexWhere((element) =>
+        (element['planoId'] == planoId &&
+            element['startTime'].toDate() == startTime));
+
+    if (index >= 0) {
+      eventosPlanos!.removeAt(index);
+    }
+
+    await save();
   }
 }
 

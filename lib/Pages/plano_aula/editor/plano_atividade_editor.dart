@@ -43,7 +43,7 @@ class _PlanoAtividadeEditorState extends State<PlanoAtividadeEditor> {
             runSpacing: 20,
             children: [
               TextFormField(
-                // key: _formKey,
+                key: _formKey,
                 controller: _duracao,
                 decoration: _decoration('Duração (em min)*'),
                 keyboardType: TextInputType.number,
@@ -55,7 +55,7 @@ class _PlanoAtividadeEditorState extends State<PlanoAtividadeEditor> {
                 },
               ),
               TextFormField(
-                // key: _formKey,
+                key: _formKey,
                 controller: _titulo,
                 decoration: _decoration('Título *'),
                 validator: (value) {
@@ -66,7 +66,7 @@ class _PlanoAtividadeEditorState extends State<PlanoAtividadeEditor> {
                 },
               ),
               TextFormField(
-                // key: _formKey,
+                key: _formKey,
                 controller: _descricao,
                 minLines: 3,
                 maxLines: 4,

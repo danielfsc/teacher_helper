@@ -28,6 +28,3 @@ List<OpcaoMenu> opcoes = [
   OpcaoMenu(
       Icons.settings, 'Configuraçoes', '/configuracoes', true, Colors.indigo),
 ];
-
-  // OpcaoMenu(Icons.category, 'Atividades', '/atividades', false, Colors.indigo),
-  // OpcaoMenu(Icons.fireplace, 'Teste FireStore', '/fire', true, Colors.green),

@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AppController extends ChangeNotifier {
   static AppController instance = AppController._();
-  // SharedPreferences? prefs;
   bool isDark = false;
   bool isLeftHanded = true;
 
@@ -52,12 +51,6 @@ class AppController extends ChangeNotifier {
       notifyListeners();
     });
   }
-
-  // _startSharedPreferences() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   print(prefs.getBool('isDark'));
-  //   isDark = prefs.getBool('isDark') == true;
-  // }
 
   brightness() {
     return isDark ? Brightness.dark : Brightness.light;

@@ -82,7 +82,6 @@ class _ProcurarBodyState extends State<ProcurarBody> {
         .where('publico', isEqualTo: true)
         .where('userMail', isNotEqualTo: AppController.instance.user.email)
         .where('disciplina', isEqualTo: _disciplina)
-        // .orderBy('titulo')
         .snapshots();
   }
 

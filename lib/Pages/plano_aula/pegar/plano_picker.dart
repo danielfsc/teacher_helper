@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:teacher_helper/Pages/plano_aula/visualizar/plano_view.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
+import 'package:teacher_helper/shared/modelos/plano_model.dart';
 import 'package:teacher_helper/shared/widgets/empty_loading.dart';
 
 class PlanoPicker extends StatefulWidget {
@@ -44,24 +44,16 @@ class _PlanoPickerState extends State<PlanoPicker> {
       child: ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, index) {
-          var plano = data[index];
+          var plano = PlanoAula.fromJson(data[index]);
           return Card(
             child: ListTile(
-              title: Text(
-                plano['titulo'],
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
+              title: Text(plano.titulo),
+              subtitle: Text(plano.disciplina!),
               trailing: Wrap(
                 children: [
                   IconButton(
                     onPressed: () async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PlanoView(
-                              plano: plano,
-                            ),
-                          ));
+                      await plano.view(context);
                     },
                     icon: const Icon(Icons.visibility),
                   ),

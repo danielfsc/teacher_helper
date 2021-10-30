@@ -1,23 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:teacher_helper/Pages/calendario/calendario_picker.dart';
-
-import 'package:teacher_helper/Pages/plano_aula/editor/plano_editor.dart';
-import 'package:teacher_helper/Pages/plano_aula/executar/plano_executar.dart';
-import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/data/nivel_escolar.dart';
 import 'package:teacher_helper/shared/modelos/opcao_menu.dart';
 import 'package:teacher_helper/shared/modelos/plano_model.dart';
-import 'package:teacher_helper/shared/modelos/turma_model.dart';
-import 'package:teacher_helper/shared/utils/gera_plano.dart';
 import 'package:teacher_helper/shared/widgets/display_utils.dart';
-import 'package:teacher_helper/shared/widgets/show_dialog.dart';
 
 class PlanoView extends StatefulWidget {
   const PlanoView({Key? key, required this.plano, this.isPrivate = true})
       : super(key: key);
-  final dynamic plano;
+  final PlanoAula plano;
   final bool isPrivate;
 
   @override
@@ -29,7 +19,7 @@ class _PlanoViewState extends State<PlanoView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Plano: ${widget.plano['titulo']}'),
+        title: Text('Plano: ${widget.plano.titulo}'),
         actions: [_menu(context, widget.plano)],
       ),
       body: Padding(
@@ -38,39 +28,39 @@ class _PlanoViewState extends State<PlanoView> {
           child: Column(
             children: [
               viewBox(context,
-                  title: 'Disciplina: ', text: widget.plano['disciplina']),
+                  title: 'Disciplina: ', text: widget.plano.disciplina!),
               viewBox(context,
                   title: 'Nível: ',
-                  text: nivelEnsino.values[widget.plano['nivel']].extenso),
+                  text: nivelEnsino.values[widget.plano.nivel].extenso),
               borderListBox(
                 context,
                 title: 'Preparação:',
-                lista: [Text(widget.plano['preparacao'])],
+                lista: [Text(widget.plano.preparacao!)],
               ),
               borderListBox(
                 context,
                 title: 'Recursos:',
-                lista: symbolList(widget.plano['recursos'], previousText: '- '),
+                lista: symbolList(widget.plano.recursos, previousText: '- '),
               ),
               borderListBox(
                 context,
                 title: 'Conteúdos:',
-                lista: numeratedList(widget.plano['conteudos']),
+                lista: numeratedList(widget.plano.conteudos),
               ),
               borderListBox(
                 context,
                 title: 'Objetivos:',
-                lista: numeratedList(widget.plano['objetivos']),
+                lista: numeratedList(widget.plano.objetivos),
               ),
               borderListBox(
                 context,
                 title: 'Atividades:',
-                lista: atividadeCardList(widget.plano['atividades']),
+                lista: atividadeCardList(widget.plano.atividades),
               ),
               borderListBox(
                 context,
                 title: 'Bibliografias:',
-                lista: numeratedList(widget.plano['bibliografias']),
+                lista: numeratedList(widget.plano.bibliografias),
               ),
             ],
           ),
@@ -105,14 +95,7 @@ class _PlanoViewState extends State<PlanoView> {
     );
   }
 
-  _deletePlano(id) {
-    CollectionReference planos =
-        FirebaseFirestore.instance.collection('planosaula');
-    planos.doc(id).delete();
-    Navigator.of(context).pop();
-  }
-
-  Widget _menu(BuildContext context, data) {
+  Widget _menu(BuildContext context, PlanoAula plano) {
     var menuItens = [
       IconMenu('Duplicar', Icons.copy),
       IconMenu('Agendar', Icons.event, isPrivate: widget.isPrivate),
@@ -136,77 +119,22 @@ class _PlanoViewState extends State<PlanoView> {
       onSelected: (value) async {
         switch (value) {
           case 'Duplicar':
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      PlanoEditor(plano: transformaDataEmPlano(data, null))),
-            );
+            plano.duplicate(context);
             break;
           case 'Deletar':
-            showAlert(
-              context,
-              title: 'Deletar Plano de Aula',
-              message: 'Essa ação não pode ser desfeita.\n Tem certeza?',
-              cancelTitle: 'CANCELAR',
-            ).then((value) {
-              if (value) {
-                _deletePlano(data.id);
-                Navigator.of(context).pop();
-              }
-            });
+            plano.destroy(context);
             break;
           case 'Gerar Word':
-            geraPlano(widget.plano);
-            break;
-          case 'Agendar':
-            CalendarTapDetails? evento = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const CalendarioPicker()),
-            );
-            if (evento != null) {
-              await _registraPlanoATurma(evento.appointments![0]);
-            }
+            plano.convertToDocx();
             break;
           case 'Executar Plano':
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PlanoExecutar(
-                      plano: transformaDataEmPlano(data, data.id))),
-            );
+            plano.execute(context);
+            break;
+          case 'Agendar':
+            plano.schedule(context);
             break;
         }
       },
-    );
-  }
-
-  Future<void> _registraPlanoATurma(Appointment evento) async {
-    String turmaId = (evento.resourceIds![0] as Map)['docId'];
-
-    Turma turma = Turma.fromJson(
-      await FirebaseFirestore.instance
-          .collection('usuarios/${AppController.instance.user.email}/turmas')
-          .doc(turmaId)
-          .get(),
-    );
-
-    turma.eventosPlanos!.add({
-      'planoId': widget.plano.id,
-      'planoTitulo': widget.plano['titulo'],
-      'startTime': evento.startTime,
-      'endTime': evento.endTime,
-    });
-
-    await FirebaseFirestore.instance
-        .collection('usuarios/${AppController.instance.user.email}/turmas')
-        .doc(turmaId)
-        .update(turma.toJson());
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Plano agendado com sucesso!'),
-        backgroundColor: Colors.green,
-      ),
     );
   }
 }

@@ -28,7 +28,6 @@ class ColorPicker extends StatefulWidget {
 }
 
 class _ColorPickerState extends State<ColorPicker> {
-  // This variable used to determine where the checkmark will be
   Color? _pickedColor;
 
   @override

@@ -2,11 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:teacher_helper/Pages/calendario/eventos.dart';
-import 'package:teacher_helper/Pages/plano_aula/executar/plano_executar.dart';
 import 'package:teacher_helper/Pages/plano_aula/pegar/plano_picker.dart';
-import 'package:teacher_helper/Pages/plano_aula/visualizar/plano_view.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/modelos/opcao_menu.dart';
+import 'package:teacher_helper/shared/modelos/plano_model.dart';
 import 'package:teacher_helper/shared/modelos/turma_model.dart';
 import 'package:teacher_helper/shared/page_mask.dart';
 import 'package:teacher_helper/shared/widgets/empty_loading.dart';
@@ -36,7 +35,6 @@ class _CalendarioPageState extends State<CalendarioPage> {
           return _calendario(context, snapshot.data.docs);
         },
       ),
-      // floatingButton: _floatingButton(),
     );
   }
 
@@ -60,13 +58,16 @@ class _CalendarioPageState extends State<CalendarioPage> {
       initialSelectedDate: DateTime.now(),
       todayHighlightColor: Theme.of(context).primaryColor,
       onLongPress: (CalendarLongPressDetails details) {
-        _decideOqueFazer(context, details);
+        _decideTipoEvento(context, details);
       },
       dataSource: MeetingDataSource(eventosTurmas(turmas)),
     );
   }
 
-  _decideOqueFazer(context, CalendarLongPressDetails details) async {
+  Future<void> _decideTipoEvento(
+    context,
+    CalendarLongPressDetails details,
+  ) async {
     if (details.appointments != null && details.appointments!.isNotEmpty) {
       Appointment event = details.appointments![0];
       dynamic resource = event.resourceIds![0];
@@ -75,13 +76,37 @@ class _CalendarioPageState extends State<CalendarioPage> {
           _registraPlanoATurma(event);
           break;
         case 'plano':
-          _decidePlano(event);
+          _showPlanoSheet(event);
           break;
       }
     }
   }
 
-  Future<void> _decidePlano(event) async {
+  Future<void> _registraPlanoATurma(Appointment event) async {
+    if (await showAlert(
+      context,
+      title: 'Atribuir um plano de aula a esta aula?',
+      message: 'Você precisa ter um plano seu para atribuir a essa aula.',
+      cancelTitle: 'Não',
+      confirmTitle: 'SIM',
+    )) {
+      PlanoAula? plano = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PlanoPicker(),
+          ));
+      if (plano != null) {
+        dynamic resource = (event.resourceIds![0]);
+        String turmaId = resource['docId'];
+
+        Turma turma = Turma.fromJson(await turmas.doc(turmaId).get());
+
+        turma.addEventoPlano(plano, event);
+      }
+    }
+  }
+
+  Future<void> _showPlanoSheet(event) async {
     var itens = [
       IconMenu('Visualizar', Icons.visibility),
       IconMenu('Executar Plano', Icons.play_arrow),
@@ -98,7 +123,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
               ...itens.map((e) {
                 return TextButton.icon(
                   onPressed: () {
-                    _escolhiAcaoPlano(
+                    _handleClick(
                         context: context, evento: event, acao: e.value);
                   },
                   icon: Icon(e.icon, size: 26),
@@ -115,90 +140,45 @@ class _CalendarioPageState extends State<CalendarioPage> {
     );
   }
 
-  Future<dynamic> _getPlanoFromEvent(Appointment evento) async {
-    String planoId = (evento.resourceIds![0] as Map)['docId'];
-
-    return (await FirebaseFirestore.instance
-        .collection('planosaula')
-        .doc(planoId)
-        .get());
-  }
-
-  Future<void> _escolhiAcaoPlano({
+  Future<void> _handleClick({
     required BuildContext context,
     required Appointment evento,
     required String acao,
   }) async {
     switch (acao) {
       case 'Visualizar':
-        var plano = await _getPlanoFromEvent(evento);
-        await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PlanoView(
-                plano: plano,
-              ),
-            ));
+        PlanoAula plano = await _buildPlanoFromEvent(evento);
+        await plano.view(context);
         break;
       case 'Executar Plano':
-        var plano = await _getPlanoFromEvent(evento);
-        await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PlanoExecutar(
-                plano: plano,
-              ),
-            ));
+        PlanoAula plano = await _buildPlanoFromEvent(evento);
+        await plano.execute(context);
         break;
       case 'Remover Evento':
-        await _removePlanoEvento(evento);
+        await _removeEventoPlano(evento);
         break;
       default:
     }
     Navigator.pop(context);
   }
 
-  _removePlanoEvento(Appointment evento) async {
+  Future<PlanoAula> _buildPlanoFromEvent(Appointment evento) async {
     String planoId = (evento.resourceIds![0] as Map)['docId'];
-    DateTime startTime = (evento.startTime);
-    String turmaId = (evento.resourceIds![1] as Map)['docId'];
-
-    Turma turma = Turma.fromJson(await turmas.doc(turmaId).get());
-    int index = turma.eventosPlanos!.indexWhere((element) =>
-        (element['planoId'] == planoId &&
-            element['startTime'].toDate() == startTime));
-    turma.eventosPlanos!.removeAt(index);
-    turmas.doc(turmaId).update(turma.toJson());
+    try {
+      PlanoAula plano = PlanoAula.fromJson(await FirebaseFirestore.instance
+          .collection('planosaula')
+          .doc(planoId)
+          .get());
+      return plano;
+    } catch (e) {
+      return PlanoAula.empty();
+    }
   }
 
-  Future<void> _registraPlanoATurma(Appointment event) async {
-    if (await showAlert(
-      context,
-      title: 'Atribuir um plano de aula a esta aula?',
-      message: 'Você precisa ter um plano seu para atribuir a essa aula.',
-      cancelTitle: 'Não',
-      confirmTitle: 'SIM',
-    )) {
-      var plano = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const PlanoPicker(),
-          ));
-      if (plano != null) {
-        dynamic resource = (event.resourceIds![0]);
-        String turmaId = resource['docId'];
+  Future<void> _removeEventoPlano(Appointment evento) async {
+    String turmaId = (evento.resourceIds![1] as Map)['docId'];
 
-        var turma = Turma.fromJson(await turmas.doc(turmaId).get());
-
-        turma.eventosPlanos!.add({
-          'planoId': plano.id,
-          'planoTitulo': plano['titulo'],
-          'startTime': event.startTime,
-          'endTime': event.endTime,
-        });
-
-        await turmas.doc(turmaId).update(turma.toJson());
-      }
-    }
+    await Turma.fromJson(await turmas.doc(turmaId).get())
+        .removeEventoPlano(evento);
   }
 }

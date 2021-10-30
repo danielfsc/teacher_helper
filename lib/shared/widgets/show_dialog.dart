@@ -20,7 +20,7 @@ Future<bool> showAlert(
       Navigator.of(context).pop(true);
     },
   );
-  // set up the AlertDialog
+
   AlertDialog alert = AlertDialog(
     title: Text(title),
     content: Text(message),
