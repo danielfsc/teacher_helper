@@ -393,7 +393,11 @@ class _PlanoEditorState extends State<PlanoEditor> {
   _addLista(context, list, title) async {
     var input = await prompt(
       context,
-      title: Text("Escreva o $title:"),
+      title: SizedBox(
+          width: MediaQuery.of(context).size.width > 700
+              ? 500
+              : MediaQuery.of(context).size.width * 0.8,
+          child: Text("Escreva o $title:")),
       minLines: 2,
       maxLines: 3,
     );

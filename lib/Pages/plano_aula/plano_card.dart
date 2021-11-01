@@ -56,7 +56,7 @@ class _PlanoCardState extends State<PlanoCard> {
       children: plano.conteudos
           .map((e) => ListTile(
                 title: Text(e),
-                leading: Icon(
+                leading: const Icon(
                   Icons.done,
                   size: 18,
                 ),
