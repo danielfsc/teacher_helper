@@ -16,8 +16,12 @@ class HomeCardWidget extends StatelessWidget {
             Navigator.of(context).popAndPushNamed(info.route);
           },
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.35,
-            height: MediaQuery.of(context).size.width * 0.35,
+            width: MediaQuery.of(context).size.width * 0.35 > 350
+                ? 350
+                : MediaQuery.of(context).size.width * 0.35,
+            height: MediaQuery.of(context).size.width * 0.35 > 350
+                ? 350
+                : MediaQuery.of(context).size.width * 0.35,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

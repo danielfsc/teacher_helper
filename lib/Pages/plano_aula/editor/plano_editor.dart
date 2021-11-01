@@ -4,6 +4,7 @@ import 'package:teacher_helper/Pages/plano_aula/editor/plano_atividade_editor.da
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/data/nivel_escolar.dart';
 import 'package:teacher_helper/shared/modelos/plano_model.dart';
+import 'package:teacher_helper/shared/widgets/disciplina_field.dart';
 import 'package:teacher_helper/shared/widgets/show_dialog.dart';
 import 'package:teacher_helper/shared/widgets/snack_message.dart';
 
@@ -91,7 +92,7 @@ class _PlanoEditorState extends State<PlanoEditor> {
             children: [
               const SizedBox.shrink(),
               _tituloField(context),
-              _disciplinaField(context),
+              disciplinaField(_disciplina),
               _publicoSwitch(context),
             ],
           ),
@@ -180,19 +181,6 @@ class _PlanoEditorState extends State<PlanoEditor> {
           });
         },
       ),
-    );
-  }
-
-  Widget _disciplinaField(BuildContext context) {
-    return TextFormField(
-      decoration: _decoration('Disciplina ${publico ? "*" : ""}'),
-      controller: _disciplina,
-      validator: (value) {
-        if (publico && (value == null || value.isEmpty)) {
-          return "Disciplina é obrigatória para plano público";
-        }
-        return null;
-      },
     );
   }
 

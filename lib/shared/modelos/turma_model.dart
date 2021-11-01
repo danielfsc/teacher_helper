@@ -7,6 +7,7 @@ import 'package:teacher_helper/Pages/turmas/turma_editor/turma_editor.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/data/datas.dart';
 import 'package:teacher_helper/shared/modelos/plano_model.dart';
+import 'package:teacher_helper/shared/utils/store_disciplina.dart';
 import 'package:teacher_helper/shared/widgets/show_dialog.dart';
 
 class Turma {
@@ -106,6 +107,7 @@ class Turma {
             .add(toJson());
         docId = docRef.id;
       }
+      await storeDisciplina(disciplina);
     } catch (e) {
       log(e.toString());
     }

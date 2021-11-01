@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AjustaHora extends StatefulWidget {
-  AjustaHora({
+  const AjustaHora({
     Key? key,
     required this.title,
     required this.onChange,

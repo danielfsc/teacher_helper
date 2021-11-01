@@ -10,21 +10,34 @@ class HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      scrollDirection: Axis.vertical,
-      primary: false,
-      padding: const EdgeInsets.all(20),
-      physics: const ScrollPhysics(),
-      crossAxisCount: 2,
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-      children: [
-        ...opcoes.map((value) {
-          return HomeCardWidget(value);
-        }).toList(),
-        logoutCard(context)
-      ],
+    return Center(
+      child: Wrap(
+        spacing: 20,
+        runSpacing: 20,
+        children: [
+          ...opcoes.map((value) {
+            return HomeCardWidget(value);
+          }).toList(),
+          logoutCard(context)
+        ],
+      ),
     );
+
+    // GridView.count(
+    //   scrollDirection: Axis.vertical,
+    //   primary: false,
+    //   padding: const EdgeInsets.all(20),
+    //   physics: const ScrollPhysics(),
+    //   crossAxisCount: 2,
+    //   crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
+    //   mainAxisSpacing: MediaQuery.of(context).size.width * 0.05,
+    //   children: [
+    //     ...opcoes.map((value) {
+    //       return HomeCardWidget(value);
+    //     }).toList(),
+    //     logoutCard(context)
+    //   ],
+    // );
   }
 
   Widget logoutCard(context) {
@@ -38,8 +51,12 @@ class HomeBody extends StatelessWidget {
             Navigator.of(context).popAndPushNamed('/');
           },
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.35,
-            height: MediaQuery.of(context).size.width * 0.35,
+            width: MediaQuery.of(context).size.width * 0.35 > 350
+                ? 350
+                : MediaQuery.of(context).size.width * 0.35,
+            height: MediaQuery.of(context).size.width * 0.35 > 350
+                ? 350
+                : MediaQuery.of(context).size.width * 0.35,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

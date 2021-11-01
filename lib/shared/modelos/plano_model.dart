@@ -6,10 +6,12 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:teacher_helper/Pages/calendario/calendario_picker.dart';
 import 'package:teacher_helper/Pages/plano_aula/editor/plano_editor.dart';
 import 'package:teacher_helper/Pages/plano_aula/executar/plano_executar.dart';
+import 'package:teacher_helper/Pages/plano_aula/plano_card.dart';
 import 'package:teacher_helper/Pages/plano_aula/visualizar/plano_view.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/modelos/turma_model.dart';
 import 'package:teacher_helper/shared/utils/gera_plano.dart';
+import 'package:teacher_helper/shared/utils/store_disciplina.dart';
 import 'package:teacher_helper/shared/widgets/show_dialog.dart';
 
 class PlanoAula {
@@ -34,6 +36,7 @@ class PlanoAula {
     required this.titulo,
     required this.nivel,
     required this.publico,
+    required this.conteudos,
     required this.objetivos,
     required this.recursos,
     required this.bibliografias,
@@ -45,6 +48,7 @@ class PlanoAula {
         titulo: '',
         nivel: 0,
         publico: false,
+        conteudos: [],
         objetivos: [],
         recursos: [],
         bibliografias: [],
@@ -65,6 +69,7 @@ class PlanoAula {
           .add(toJson());
       docId = docRef.id;
     }
+    storeDisciplina(disciplina);
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +81,7 @@ class PlanoAula {
       'titulo': titulo,
       'nivel': nivel,
       'publico': publico,
+      'conteudos': conteudos,
       'objetivos': objetivos,
       'recursos': recursos,
       'bibliografias': bibliografias,
@@ -92,6 +98,7 @@ class PlanoAula {
       titulo: json['titulo'],
       nivel: json['nivel'],
       publico: json['publico'],
+      conteudos: List<String>.from(json['conteudos']),
       objetivos: List<String>.from(json['objetivos']),
       recursos: List<String>.from(json['recursos']),
       bibliografias: List<String>.from(json['recursos']),
@@ -116,6 +123,13 @@ class PlanoAula {
       total += atividade['duracao'] as int;
     }
     return total;
+  }
+
+  Widget card(BuildContext context, {isPrivate = true}) {
+    return PlanoCard(
+      plano: this,
+      isPrivate: isPrivate,
+    );
   }
 
   Future<void> duplicate(BuildContext context) async {

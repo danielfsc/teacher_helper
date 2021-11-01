@@ -2,14 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 
-// Estrutura padrão das páginas do APP - Não é obrigatório utilizar
-// #Parâmetros
-// - title : Uma String com o texto que será colocado na AppBar;
-// - body : O widget que será colocado no corpo da página;
-// - floatingButton: Um FloatActionButton para ser adicionado na página;
-// Esse widget não é obrigatório usar na página, mas ele deixa todas as páginas
-// dentro do mesmo padrão de cor, botões e menus.
-
 class BodyMask extends StatefulWidget {
   final String title;
   final Widget body;
@@ -34,14 +26,7 @@ class _BodyMaskState extends State<BodyMask> {
       onWillPop: _redirectTo,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
-          leading: AppController.instance.isLeftHanded
-              ? const MenuButtonWidget()
-              : null,
-          actions: AppController.instance.isLeftHanded
-              ? []
-              : [const MenuButtonWidget()],
-        ),
+            title: Text(widget.title), leading: const MenuButtonWidget()),
         body: widget.body,
         floatingActionButton: widget.floatingButton,
         floatingActionButtonLocation:

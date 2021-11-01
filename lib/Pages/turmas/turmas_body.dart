@@ -38,10 +38,16 @@ class _TurmasBodyState extends State<TurmasBody> {
 
   Widget _listaTurmas(List data) {
     List<Turma> turmas = data.map((e) => Turma.fromJson(e)).toList();
-    return ListView.builder(
-        itemCount: turmas.length,
-        itemBuilder: (context, index) {
-          return turmas[index].card(context);
-        });
+    return Center(
+      child: Wrap(
+        spacing: 20,
+        runSpacing: 20,
+        children: turmas.map((t) => t.card(context)).toList(),
+      ),
+    );
+    // itemCount: turmas.length,
+    // itemBuilder: (context, index) {
+    //   return turmas[index].card(context);
+    // });
   }
 }

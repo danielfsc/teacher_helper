@@ -29,17 +29,39 @@ class _PlanoCardState extends State<PlanoCard> {
         dynamic state = _menuKey.currentState;
         state.showButtonMenu();
       },
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              _header(context, widget.plano),
-              _info(context, widget.plano),
-            ],
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.5 > 350
+            ? 350
+            : double.infinity,
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                _header(context, widget.plano),
+                _info(context, widget.plano),
+                _conteudo(context, widget.plano)
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _conteudo(BuildContext context, PlanoAula plano) {
+    return ExpansionTile(
+      title: Text('Conteúdos (${plano.conteudos.length})'),
+      controlAffinity: ListTileControlAffinity.trailing,
+      children: plano.conteudos
+          .map((e) => ListTile(
+                title: Text(e),
+                leading: Icon(
+                  Icons.done,
+                  size: 18,
+                ),
+              ))
+          .toList(),
     );
   }
 

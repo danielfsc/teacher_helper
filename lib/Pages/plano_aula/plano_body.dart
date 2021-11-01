@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:teacher_helper/Pages/plano_aula/plano_card.dart';
+// import 'package:teacher_helper/Pages/plano_aula/plano_card.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/shared/modelos/plano_model.dart';
 import 'package:teacher_helper/shared/widgets/empty_loading.dart';
@@ -34,15 +34,16 @@ class _PlanoAulaBodyState extends State<PlanoAulaBody> {
     );
   }
 
-  Widget _listaPlanos(data) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          PlanoAula plano = PlanoAula.fromJson(data[index]);
-          return PlanoCard(plano: plano);
-        },
+  Widget _listaPlanos(List data) {
+    List<PlanoAula> planos = data.map((e) => PlanoAula.fromJson(e)).toList();
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: planos.map((p) => p.card(context)).toList(),
+        ),
       ),
     );
   }

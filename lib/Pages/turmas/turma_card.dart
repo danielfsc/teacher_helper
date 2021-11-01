@@ -14,15 +14,18 @@ class TurmasCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              _titulos(context),
-              _aulas(context),
-              _botoes(context),
-            ],
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width > 700 ? 350 : double.infinity,
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                _titulos(context),
+                _aulas(context),
+                _botoes(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -31,7 +34,9 @@ class TurmasCard extends StatelessWidget {
 
   Widget _titulos(context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.3,
+      width: MediaQuery.of(context).size.width * 0.5 > 350
+          ? 100
+          : MediaQuery.of(context).size.width * 0.3,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -74,7 +79,9 @@ class TurmasCard extends StatelessWidget {
 
   Widget _botoes(context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.25,
+      width: MediaQuery.of(context).size.width * 0.5 > 350
+          ? 80
+          : MediaQuery.of(context).size.width * 0.3,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

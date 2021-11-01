@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:teacher_helper/Pages/plano_aula/plano_card.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
+import 'package:teacher_helper/shared/modelos/plano_model.dart';
 import 'package:teacher_helper/shared/widgets/empty_loading.dart';
 
 class ProcurarBody extends StatefulWidget {
@@ -12,6 +12,8 @@ class ProcurarBody extends StatefulWidget {
 }
 
 class _ProcurarBodyState extends State<ProcurarBody> {
+  CollectionReference disciplinas =
+      FirebaseFirestore.instance.collection('disciplinas');
   CollectionReference publicos =
       FirebaseFirestore.instance.collection('planosaula');
   String? _disciplina;
@@ -32,7 +34,18 @@ class _ProcurarBodyState extends State<ProcurarBody> {
     ));
   }
 
-  listaPlanos() {
+  Widget selectDisciplinas() {
+    return StreamBuilder(
+        stream: disciplinas.orderBy('nome').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (!snapshot.hasData) {
+            return loading();
+          }
+          return _disciplinaMenu(snapshot.data.docs);
+        });
+  }
+
+  Widget listaPlanos() {
     return Center(
       child: StreamBuilder(
           stream: temDisciplina,
@@ -66,11 +79,9 @@ class _ProcurarBodyState extends State<ProcurarBody> {
               child: ListView.builder(
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
-                    var plano = snapshot.data.docs[index];
-                    return PlanoCard(
-                      plano: plano,
-                      isPrivate: false,
-                    );
+                    PlanoAula plano =
+                        PlanoAula.fromJson(snapshot.data.docs[index]);
+                    return plano.card(context, isPrivate: false);
                   }),
             );
           }),
@@ -83,23 +94,6 @@ class _ProcurarBodyState extends State<ProcurarBody> {
         .where('userMail', isNotEqualTo: AppController.instance.user.email)
         .where('disciplina', isEqualTo: _disciplina)
         .snapshots();
-  }
-
-  Widget selectDisciplinas() {
-    return StreamBuilder(
-        stream: publicos
-            .where('publico', isEqualTo: true)
-            .where('userMail', isNotEqualTo: AppController.instance.user.email)
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (!snapshot.hasData) {
-            return loading();
-          } else if (snapshot.data.docs.length == 0) {
-            return const Text(
-                'Ainda não temos planos no nosso sistema. \nSeja o primeiro a contribuir com a comunidade.');
-          }
-          return _disciplinaMenu(snapshot.data.docs);
-        });
   }
 
   Widget _disciplinaMenu(docs) {
@@ -126,17 +120,12 @@ class _ProcurarBodyState extends State<ProcurarBody> {
     );
   }
 
-  _disciplinasOptions(docs) {
+  List<DropdownMenuItem<String?>>? _disciplinasOptions(docs) {
     return docs
-        .map((d) {
-          return d['disciplina'].toString().toUpperCase();
-        })
-        .toSet()
-        .toList()
         .map((doc) {
           return DropdownMenuItem<String>(
-            value: doc,
-            child: Text(doc),
+            value: doc['nome'],
+            child: Text(doc['nome']),
           );
         })
         .cast<DropdownMenuItem<String>>()

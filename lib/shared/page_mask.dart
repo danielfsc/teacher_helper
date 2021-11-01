@@ -32,9 +32,11 @@ class _PageMaskState extends State<PageMask> {
       controller: _zoomController,
       mainScreenScale: 0.15,
       showShadow: true,
-      slideWidth: MediaQuery.of(context).size.width * 0.55,
+      slideWidth: MediaQuery.of(context).size.width * 0.5 > 350
+          ? 350
+          : MediaQuery.of(context).size.width * 0.55,
       style: DrawerStyle.Style1,
-      angle: -5,
+      angle: MediaQuery.of(context).size.width * 0.5 > 350 ? 0 : -5,
       backgroundColor: Colors.orangeAccent,
       openCurve: Curves.easeInCirc,
       closeCurve: Curves.easeOutCirc,

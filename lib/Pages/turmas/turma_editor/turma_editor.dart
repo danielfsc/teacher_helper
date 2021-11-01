@@ -9,6 +9,7 @@ import 'package:teacher_helper/shared/modelos/escola_model.dart';
 import 'package:teacher_helper/shared/widgets/color_picker.dart';
 import 'package:teacher_helper/shared/data/datas.dart';
 import 'package:teacher_helper/shared/modelos/turma_model.dart';
+import 'package:teacher_helper/shared/widgets/disciplina_field.dart';
 import 'package:teacher_helper/shared/widgets/empty_loading.dart';
 import 'package:teacher_helper/shared/widgets/snack_message.dart';
 
@@ -75,7 +76,7 @@ class _TurmaEditorState extends State<TurmaEditor> {
                 const SizedBox(height: 0),
                 _tituloField(),
                 _escolaField(),
-                _disciplinaField(),
+                disciplinaField(_disciplina),
                 _colorsField(),
                 _aulasSetter(),
                 _aulasList(),
@@ -98,13 +99,6 @@ class _TurmaEditorState extends State<TurmaEditor> {
         }
         return null;
       },
-    );
-  }
-
-  Widget _disciplinaField() {
-    return TextFormField(
-      decoration: _decoration('Disciplina'),
-      controller: _disciplina,
     );
   }
 
@@ -282,7 +276,7 @@ class _TurmaEditorState extends State<TurmaEditor> {
       nome: _nome.text,
       cor: _cor,
       escola: _escola.text,
-      disciplina: _disciplina.text,
+      disciplina: _disciplina.text.toUpperCase(),
       eventosPlanos: widget.turma != null ? widget.turma!.eventosPlanos : [],
       dias: dias,
     );

@@ -46,7 +46,9 @@ class _MenuPageState extends State<MenuPage> {
         backgroundColor: Colors.transparent,
         body: SafeArea(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.5,
+            width: MediaQuery.of(context).size.width * 0.5 > 350
+                ? 350
+                : MediaQuery.of(context).size.width * 0.5,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
