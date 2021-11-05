@@ -15,7 +15,7 @@ class CalendarioPicker extends StatefulWidget {
 
 class _CalendarioPickerState extends State<CalendarioPicker> {
   CollectionReference turmas = FirebaseFirestore.instance
-      .collection('usuarios/${AppController.instance.user.email!}/turmas');
+      .collection('usuarios/${AppController.instance.email}/turmas');
 
   final CalendarController _controller = CalendarController();
 

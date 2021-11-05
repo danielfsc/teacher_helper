@@ -10,6 +10,9 @@ class AppController extends ChangeNotifier {
   User? _user;
 
   User get user {
+    if (_user == null) {
+      return FirebaseAuth.instance.currentUser!;
+    }
     return _user!;
   }
 
@@ -18,6 +21,10 @@ class AppController extends ChangeNotifier {
       return _user!.email ?? '';
     }
     return '';
+  }
+
+  bool get isLoggedIn {
+    return _user != null;
   }
 
   set user(User? user) {

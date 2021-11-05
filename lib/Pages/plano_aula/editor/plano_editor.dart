@@ -237,30 +237,49 @@ class _PlanoEditorState extends State<PlanoEditor> {
               },
             ),
           ),
-          Column(
-            children: atividades.map((e) {
-              return Card(
-                child: ListTile(
-                  title: Text(e['titulo']),
-                  subtitle: Text('${e['duracao']} min'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () =>
-                            _editaAtividade(context, atividades.indexOf(e), e),
-                        icon: const Icon(Icons.edit),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: ReorderableListView(
+              physics: const ScrollPhysics(),
+              onReorder: (oldIndex, newIndex) {
+                setState(() {
+                  if (oldIndex < newIndex) {
+                    newIndex -= 1;
+                  }
+                  final item = atividades.removeAt(oldIndex);
+                  atividades.insert(newIndex, item);
+                });
+              },
+              children: [
+                for (final e in atividades)
+                  Card(
+                    key: ValueKey(e),
+                    child: ListTile(
+                      title: Text(e['titulo']),
+                      subtitle: Text('${e['duracao']} min'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () => _editaAtividade(
+                                context, atividades.indexOf(e), e),
+                            icon: const Icon(Icons.edit),
+                          ),
+                          IconButton(
+                            onPressed: () => _deleteAtividade(
+                                context, atividades.indexOf(e)),
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        onPressed: () =>
-                            _deleteAtividade(context, atividades.indexOf(e)),
-                        icon: const Icon(Icons.delete),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              );
-            }).toList(),
+              ],
+
+              // atividades.map((e) {
+              //   return
+              // }).toList(),
+            ),
           ),
         ],
       ),

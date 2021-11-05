@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teacher_helper/shared/utils/is_int.dart';
 
 class PlanoAtividadeEditor extends StatefulWidget {
   const PlanoAtividadeEditor({Key? key, this.atividade}) : super(key: key);
@@ -10,7 +11,7 @@ class PlanoAtividadeEditor extends StatefulWidget {
 }
 
 class _PlanoAtividadeEditorState extends State<PlanoAtividadeEditor> {
-  final _formKey = GlobalKey<FormState>();
+  final _inputKey = GlobalKey<FormState>();
 
   final _duracao = TextEditingController();
 
@@ -37,13 +38,13 @@ class _PlanoAtividadeEditorState extends State<PlanoAtividadeEditor> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
-          key: _formKey,
+          key: _inputKey,
           child: Wrap(
             spacing: 20,
             runSpacing: 20,
             children: [
+              const SizedBox.shrink(),
               TextFormField(
-                key: _formKey,
                 controller: _duracao,
                 decoration: _decoration('Duração (em min)*'),
                 keyboardType: TextInputType.number,
@@ -51,11 +52,13 @@ class _PlanoAtividadeEditorState extends State<PlanoAtividadeEditor> {
                   if (value == null || value.isEmpty) {
                     return 'A duração é obrigatória';
                   }
+                  if (!isInt(value)) {
+                    return 'A duração deve conter apenas números inteiros';
+                  }
                   return null;
                 },
               ),
               TextFormField(
-                key: _formKey,
                 controller: _titulo,
                 decoration: _decoration('Título *'),
                 validator: (value) {
@@ -66,7 +69,6 @@ class _PlanoAtividadeEditorState extends State<PlanoAtividadeEditor> {
                 },
               ),
               TextFormField(
-                key: _formKey,
                 controller: _descricao,
                 minLines: 3,
                 maxLines: 4,
@@ -92,7 +94,7 @@ class _PlanoAtividadeEditorState extends State<PlanoAtividadeEditor> {
   }
 
   _salvar(context) {
-    if (_formKey.currentState!.validate()) {
+    if (_inputKey.currentState!.validate()) {
       Navigator.of(context).pop({
         'duracao': int.parse(_duracao.text),
         'titulo': _titulo.text,

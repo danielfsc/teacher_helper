@@ -101,7 +101,7 @@ class PlanoAula {
       conteudos: List<String>.from(json['conteudos']),
       objetivos: List<String>.from(json['objetivos']),
       recursos: List<String>.from(json['recursos']),
-      bibliografias: List<String>.from(json['recursos']),
+      bibliografias: List<String>.from(json['bibliografias']),
       atividades: List.from(json['atividades']),
     );
   }
@@ -189,8 +189,8 @@ class PlanoAula {
     }
   }
 
-  Future<void> convertToDocx() async {
-    await geraPlano(this);
+  void convertToDocx() {
+    geraPlano(this);
   }
 }
 
@@ -199,7 +199,7 @@ Future<void> schedulePlanoToTurma(
   String turmaId = (appointment.resourceIds![0] as Map)['docId'];
   Turma turma = Turma.fromJson(
     await FirebaseFirestore.instance
-        .collection('usuarios/${AppController.instance.user.email}/turmas')
+        .collection('usuarios/${AppController.instance.email}/turmas')
         .doc(turmaId)
         .get(),
   );

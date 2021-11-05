@@ -13,7 +13,7 @@ class _FirestorePageState extends State<FirestorePage> {
   final textController = TextEditingController();
 
   CollectionReference groceries = FirebaseFirestore.instance
-      .collection('usuarios/${AppController.instance.user.email!}/groceries');
+      .collection('usuarios/${AppController.instance.email}/groceries');
 
   @override
   Widget build(BuildContext context) {

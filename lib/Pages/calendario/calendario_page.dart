@@ -20,7 +20,7 @@ class CalendarioPage extends StatefulWidget {
 
 class _CalendarioPageState extends State<CalendarioPage> {
   CollectionReference turmas = FirebaseFirestore.instance
-      .collection('usuarios/${AppController.instance.user.email!}/turmas');
+      .collection('usuarios/${AppController.instance.email}/turmas');
   final CalendarController _controller = CalendarController();
   @override
   Widget build(BuildContext context) {

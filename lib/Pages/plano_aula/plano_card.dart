@@ -31,7 +31,7 @@ class _PlanoCardState extends State<PlanoCard> {
       },
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.5 > 350
-            ? 350
+            ? MediaQuery.of(context).size.width * 0.45
             : double.infinity,
         child: Card(
           child: Padding(
@@ -143,7 +143,7 @@ class _PlanoCardState extends State<PlanoCard> {
 
     Turma turma = Turma.fromJson(
       await FirebaseFirestore.instance
-          .collection('usuarios/${AppController.instance.user.email}/turmas')
+          .collection('usuarios/${AppController.instance.email}/turmas')
           .doc(turmaId)
           .get(),
     );
@@ -156,7 +156,7 @@ class _PlanoCardState extends State<PlanoCard> {
     });
 
     await FirebaseFirestore.instance
-        .collection('usuarios/${AppController.instance.user.email}/turmas')
+        .collection('usuarios/${AppController.instance.email}/turmas')
         .doc(turmaId)
         .update(turma.toJson());
     ScaffoldMessenger.of(context).showSnackBar(

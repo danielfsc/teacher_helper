@@ -24,45 +24,47 @@ class _PlanoViewState extends State<PlanoView> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              viewBox(context,
-                  title: 'Disciplina: ', text: widget.plano.disciplina!),
-              viewBox(context,
-                  title: 'Nível: ',
-                  text: nivelEnsino.values[widget.plano.nivel].extenso),
-              borderListBox(
-                context,
-                title: 'Preparação:',
-                lista: [Text(widget.plano.preparacao!)],
-              ),
-              borderListBox(
-                context,
-                title: 'Recursos:',
-                lista: symbolList(widget.plano.recursos, previousText: '- '),
-              ),
-              borderListBox(
-                context,
-                title: 'Conteúdos:',
-                lista: numeratedList(widget.plano.conteudos),
-              ),
-              borderListBox(
-                context,
-                title: 'Objetivos:',
-                lista: numeratedList(widget.plano.objetivos),
-              ),
-              borderListBox(
-                context,
-                title: 'Atividades:',
-                lista: atividadeCardList(widget.plano.atividades),
-              ),
-              borderListBox(
-                context,
-                title: 'Bibliografias:',
-                lista: numeratedList(widget.plano.bibliografias),
-              ),
-            ],
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                viewBox(context,
+                    title: 'Disciplina: ', text: widget.plano.disciplina!),
+                viewBox(context,
+                    title: 'Nível: ',
+                    text: nivelEnsino.values[widget.plano.nivel].extenso),
+                borderListBox(
+                  context,
+                  title: 'Preparação:',
+                  lista: [Text(widget.plano.preparacao!)],
+                ),
+                borderListBox(
+                  context,
+                  title: 'Recursos:',
+                  lista: symbolList(widget.plano.recursos, previousText: '- '),
+                ),
+                borderListBox(
+                  context,
+                  title: 'Conteúdos:',
+                  lista: numeratedList(widget.plano.conteudos),
+                ),
+                borderListBox(
+                  context,
+                  title: 'Objetivos:',
+                  lista: numeratedList(widget.plano.objetivos),
+                ),
+                borderListBox(
+                  context,
+                  title: 'Atividades:',
+                  lista: atividadeCardList(widget.plano.atividades),
+                ),
+                borderListBox(
+                  context,
+                  title: 'Bibliografias:',
+                  lista: numeratedList(widget.plano.bibliografias),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -15,7 +15,9 @@ class TurmasCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: SizedBox(
-        width: MediaQuery.of(context).size.width > 700 ? 350 : double.infinity,
+        width: MediaQuery.of(context).size.width > 700
+            ? MediaQuery.of(context).size.width * 0.3
+            : double.infinity,
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -35,7 +37,7 @@ class TurmasCard extends StatelessWidget {
   Widget _titulos(context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.5 > 350
-          ? 100
+          ? MediaQuery.of(context).size.width * 0.15
           : MediaQuery.of(context).size.width * 0.3,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

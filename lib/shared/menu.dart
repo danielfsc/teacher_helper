@@ -18,11 +18,18 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  final User _user = AppController.instance.user;
+  final User? _user = AppController.instance.user;
 
   bool _estaSaindo = false;
   @override
   void initState() {
+    // if (_user == null) {
+    //   Authentication.isLogged(context: context).then((value) {
+    //     setState(() {
+    //       _user = value;
+    //     });
+    //   });
+    // }
     super.initState();
   }
 
@@ -66,49 +73,53 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   Widget _cabecalhoWidget() {
-    if (_user.photoURL != null) {
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ClipOval(
-              child: Material(
-                color: Colors.grey,
-                child: CachedNetworkImage(
-                  fit: BoxFit.fitHeight,
-                  imageUrl: _user.photoURL!,
-                  placeholder: (context, url) => loading(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+    if (_user != null) {
+      if (_user!.photoURL != null) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipOval(
+                child: Material(
+                  color: Colors.grey,
+                  child: CachedNetworkImage(
+                    fit: BoxFit.fitHeight,
+                    imageUrl: _user!.photoURL!,
+                    placeholder: (context, url) => loading(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              _user.displayName!,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onPrimary,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                _user!.displayName!,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
             ),
-          ),
-        ],
-      );
-    }
-    return ClipOval(
-      child: Material(
-        color: Colors.grey.withOpacity(0.3),
-        child: const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(
-            Icons.person,
-            size: 60,
-            color: Colors.grey,
+          ],
+        );
+      }
+      return ClipOval(
+        child: Material(
+          color: Colors.grey.withOpacity(0.3),
+          child: const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Icon(
+              Icons.person,
+              size: 60,
+              color: Colors.grey,
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
+    return const Spacer();
   }
 
   Widget _menuOpcoes() {

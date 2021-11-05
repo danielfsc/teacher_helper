@@ -91,7 +91,7 @@ class _ProcurarBodyState extends State<ProcurarBody> {
   _getPlanos() {
     temDisciplina = publicos
         .where('publico', isEqualTo: true)
-        .where('userMail', isNotEqualTo: AppController.instance.user.email)
+        .where('userMail', isNotEqualTo: AppController.instance.email)
         .where('disciplina', isEqualTo: _disciplina)
         .snapshots();
   }

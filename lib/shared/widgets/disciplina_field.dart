@@ -18,8 +18,6 @@ Widget disciplinaField(TextEditingController controller) {
 
         _isLoading = false;
         return teste.docs.map((d) => (d['nome'] as String)).toList();
-
-        // return disciplinas.map((e) => e['nome']).toLis();
       } catch (e) {
         return [];
       }

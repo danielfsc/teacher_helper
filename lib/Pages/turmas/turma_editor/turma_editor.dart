@@ -27,7 +27,7 @@ class _TurmaEditorState extends State<TurmaEditor> {
 
   bool _isLoading = false;
   CollectionReference turmas = FirebaseFirestore.instance
-      .collection('usuarios/${AppController.instance.user.email!}/turmas');
+      .collection('usuarios/${AppController.instance.email}/turmas');
 
   final _nome = TextEditingController();
   final _escola = TextEditingController();

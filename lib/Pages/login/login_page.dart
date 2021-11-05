@@ -55,12 +55,12 @@ class _LoginPageState extends State<LoginPage> {
                         flex: 1,
                         child: Image.asset(
                           'assets/teacher_logo.png',
-                          height: 160,
+                          height: MediaQuery.of(context).size.height * 0.3,
                         ),
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        'Teacher Helper',
+                        'Teacher\'s Helper',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary,
                           fontSize: 40,

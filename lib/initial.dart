@@ -30,6 +30,7 @@ class InitialWidget extends StatelessWidget {
           ),
           initialRoute: '/',
           routes: routes,
+          title: 'Teacher\'s Helper',
         );
       },
     );

@@ -13,7 +13,7 @@ class TurmasBody extends StatefulWidget {
 
 class _TurmasBodyState extends State<TurmasBody> {
   CollectionReference turmas = FirebaseFirestore.instance
-      .collection('usuarios/${AppController.instance.user.email!}/turmas');
+      .collection('usuarios/${AppController.instance.email}/turmas');
 
   @override
   Widget build(BuildContext context) {

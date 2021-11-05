@@ -20,7 +20,7 @@ class _PlanoAulaBodyState extends State<PlanoAulaBody> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: planos
-          .where('userMail', isEqualTo: AppController.instance.user.email)
+          .where('userMail', isEqualTo: AppController.instance.email)
           .orderBy('titulo')
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
