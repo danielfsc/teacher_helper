@@ -19,10 +19,7 @@ class _PlanoAulaBodyState extends State<PlanoAulaBody> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: planos
-          .where('userMail', isEqualTo: AppController.instance.email)
-          .orderBy('titulo')
-          .snapshots(),
+      stream: requestPlanos(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (!snapshot.hasData) {
           return loading();
@@ -32,6 +29,13 @@ class _PlanoAulaBodyState extends State<PlanoAulaBody> {
         return _listaPlanos(snapshot.data.docs);
       },
     );
+  }
+
+  Stream<dynamic>? requestPlanos() {
+    return planos
+        .where('userMail', isEqualTo: AppController.instance.email)
+        .orderBy('titulo')
+        .snapshots();
   }
 
   Widget _listaPlanos(List data) {

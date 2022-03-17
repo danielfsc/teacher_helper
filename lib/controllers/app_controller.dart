@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:teacher_helper/controllers/authentication.dart';
 
 class AppController extends ChangeNotifier {
   static AppController instance = AppController._();
@@ -9,11 +10,18 @@ class AppController extends ChangeNotifier {
 
   User? _user;
 
-  User get user {
-    if (_user == null) {
-      return FirebaseAuth.instance.currentUser!;
-    }
-    return _user!;
+  User? get user {
+    return _user;
+  }
+
+  User? getUser(BuildContext context) {
+    if (_user == null) {}
+
+    return user;
+  }
+
+  set user(user) {
+    _user = user;
   }
 
   String get email {
@@ -25,10 +33,6 @@ class AppController extends ChangeNotifier {
 
   bool get isLoggedIn {
     return _user != null;
-  }
-
-  set user(User? user) {
-    _user = user;
   }
 
   changeHand() {

@@ -18,7 +18,8 @@ class Authentication {
     );
   }
 
-  static void setUserAndGoToHome(BuildContext context, User user) {
+  static void setUserAndGoToHome(BuildContext context, User user,
+      {String endPoint = '/home'}) {
     AppController.instance.user = user;
     FirebaseFirestore.instance.collection('usuarios').doc(user.email).set({
       'uid': user.uid,
@@ -26,18 +27,47 @@ class Authentication {
       'photoURL': user.photoURL,
       'phoneNumber': user.phoneNumber,
     });
-    Navigator.of(context).popAndPushNamed("/home");
+    Navigator.of(context).popAndPushNamed(endPoint);
   }
 
-  static Future<FirebaseApp> initializeFirebase({
-    required BuildContext context,
-  }) async {
+  static Future<void> routeGuard(BuildContext context,
+      {String endPoint = '/home'}) async {
+    if (AppController.instance.user == null) {
+      await Firebase.initializeApp();
+      await for (final u in FirebaseAuth.instance.authStateChanges()) {
+        if (u == null) {
+          Navigator.of(context).popAndPushNamed('/');
+        } else {
+          AppController.instance.user = u;
+          Navigator.of(context).popAndPushNamed(endPoint);
+        }
+      }
+    }
+  }
+
+  static Future<FirebaseApp> initializeFirebase(
+      {required BuildContext context, String endPoint = '/home'}) async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
 
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      setUserAndGoToHome(context, user);
+      setUserAndGoToHome(context, user, endPoint: endPoint);
+    }
+
+    return firebaseApp;
+  }
+
+  static Future<FirebaseApp> checkLogin(
+      {required BuildContext context, String endPoint = '/home'}) async {
+    FirebaseApp firebaseApp = await Firebase.initializeApp();
+
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      setUserAndGoToHome(context, user, endPoint: endPoint);
+    } else {
+      Navigator.of(context).popAndPushNamed('/');
     }
 
     return firebaseApp;

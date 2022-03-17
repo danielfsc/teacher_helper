@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/calendario/calendario_page.dart';
 import 'package:teacher_helper/Pages/configuracao/configuracao_page.dart';
-import 'package:teacher_helper/Pages/firestore/firestore_page.dart';
 import 'package:teacher_helper/Pages/home/home_page.dart';
 import 'package:teacher_helper/Pages/login/login_page.dart';
 import 'package:teacher_helper/Pages/plano_aula/plano_page.dart';
@@ -17,7 +16,6 @@ var routes = <String, WidgetBuilder>{
   '/planos': (context) => const PlanoAulaPage(),
   '/configuracoes': (context) => const ConfiguracaoPage(),
   '/procurar': (context) => const ProcurarPage(),
-  '/fire': (context) => const FirestorePage(),
 };
 
 List<OpcaoMenu> opcoes = [

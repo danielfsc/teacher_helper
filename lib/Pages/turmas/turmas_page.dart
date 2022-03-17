@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/turmas/turma_editor/turma_editor.dart';
 import 'package:teacher_helper/Pages/turmas/turmas_body.dart';
+import 'package:teacher_helper/controllers/authentication.dart';
 import 'package:teacher_helper/shared/page_mask.dart';
 
 class TurmasPage extends StatefulWidget {
@@ -11,6 +12,12 @@ class TurmasPage extends StatefulWidget {
 }
 
 class _TurmasPageState extends State<TurmasPage> {
+  @override
+  void initState() {
+    Authentication.routeGuard(context, endPoint: '/turmas');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PageMask(

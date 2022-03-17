@@ -4,6 +4,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:teacher_helper/Pages/calendario/eventos.dart';
 import 'package:teacher_helper/Pages/plano_aula/pegar/plano_picker.dart';
 import 'package:teacher_helper/controllers/app_controller.dart';
+import 'package:teacher_helper/controllers/authentication.dart';
 import 'package:teacher_helper/shared/modelos/opcao_menu.dart';
 import 'package:teacher_helper/shared/modelos/plano_model.dart';
 import 'package:teacher_helper/shared/modelos/turma_model.dart';
@@ -19,15 +20,25 @@ class CalendarioPage extends StatefulWidget {
 }
 
 class _CalendarioPageState extends State<CalendarioPage> {
-  CollectionReference turmas = FirebaseFirestore.instance
-      .collection('usuarios/${AppController.instance.email}/turmas');
+  CollectionReference? turmas; //= FirebaseFirestore.instance
+  // .collection('usuarios/${AppController.instance.email}/turmas');
+
   final CalendarController _controller = CalendarController();
+
+  @override
+  void initState() {
+    Authentication.routeGuard(context, endPoint: '/calendario');
+    turmas = FirebaseFirestore.instance
+        .collection('usuarios/${AppController.instance.email}/turmas');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PageMask(
       title: 'Calendário',
       body: StreamBuilder(
-        stream: turmas.snapshots(),
+        stream: turmas!.snapshots(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (!snapshot.hasData) {
             return loading();
@@ -99,7 +110,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
         dynamic resource = (event.resourceIds![0]);
         String turmaId = resource['docId'];
 
-        Turma turma = Turma.fromJson(await turmas.doc(turmaId).get());
+        Turma turma = Turma.fromJson(await turmas!.doc(turmaId).get());
 
         turma.addEventoPlano(plano, event);
       }
@@ -178,7 +189,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
   Future<void> _removeEventoPlano(Appointment evento) async {
     String turmaId = (evento.resourceIds![1] as Map)['docId'];
 
-    await Turma.fromJson(await turmas.doc(turmaId).get())
+    await Turma.fromJson(await turmas!.doc(turmaId).get())
         .removeEventoPlano(evento);
   }
 }

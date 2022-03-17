@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teacher_helper/Pages/plano_aula/editor/plano_editor.dart';
 import 'package:teacher_helper/Pages/plano_aula/plano_body.dart';
+import 'package:teacher_helper/controllers/authentication.dart';
 import 'package:teacher_helper/shared/page_mask.dart';
 
 class PlanoAulaPage extends StatefulWidget {
@@ -12,6 +12,12 @@ class PlanoAulaPage extends StatefulWidget {
 }
 
 class _PlanoAulaPageState extends State<PlanoAulaPage> {
+  @override
+  void initState() {
+    Authentication.routeGuard(context, endPoint: '/planos');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PageMask(

@@ -31,7 +31,13 @@ Future<bool> geraPlano(PlanoAula plano) async {
 
 Future<String?> createFileAndDownload(PlanoAula plano) async {
   try {
-    final blob = html.Blob([_generateDocxRawData(plano)]);
+    // html.AnchorElement(
+    //     href:
+    //         'data:application/octet-stream;charset=utf-16le;base64,${_generateDocxRawData(plano)}')
+    //   ..setAttribute('download', 'teste.docx')
+    //   ..click();
+
+    final blob = html.Blob([await _generateDocxRawData(plano)]);
     final url = html.Url.createObjectUrlFromBlob(blob);
     final anchor = html.document.createElement('a') as html.AnchorElement
       ..href = url
@@ -45,9 +51,10 @@ Future<String?> createFileAndDownload(PlanoAula plano) async {
 // cleanup
     html.document.body!.children.remove(anchor);
     html.Url.revokeObjectUrl(url);
-    return 'teste';
+    return 'ok';
   } catch (e) {
     log(e.toString());
+    return null;
   }
 }
 
@@ -116,4 +123,5 @@ Future<String?> createFileOnSystem(PlanoAula plano) async {
   } catch (e) {
     log(e.toString());
   }
+  return null;
 }

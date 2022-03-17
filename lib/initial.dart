@@ -19,7 +19,6 @@ class InitialWidget extends StatelessWidget {
             SfGlobalLocalizations.delegate
           ],
           supportedLocales: const [
-            Locale('BR'),
             Locale('pt'),
             Locale('en'),
           ],

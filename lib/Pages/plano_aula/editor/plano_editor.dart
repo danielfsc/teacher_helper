@@ -75,9 +75,10 @@ class _PlanoEditorState extends State<PlanoEditor> {
   Widget _stepper(context) {
     return Stepper(
       currentStep: _index,
-      controlsBuilder: (BuildContext context,
-              {VoidCallback? onStepContinue, VoidCallback? onStepCancel}) =>
-          const SizedBox.shrink(),
+      // controlsBuilder: ,
+      // controlsBuilder: (BuildContext context,
+      // {VoidCallback? onStepContinue, VoidCallback? onStepCancel}) =>
+      // const SizedBox.shrink(),
       onStepTapped: (int index) {
         setState(() {
           _index = index;

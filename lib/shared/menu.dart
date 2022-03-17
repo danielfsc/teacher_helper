@@ -1,7 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:teacher_helper/controllers/app_controller.dart';
 import 'package:teacher_helper/controllers/authentication.dart';
 import 'package:teacher_helper/shared/data/routes.dart';
 import 'package:teacher_helper/shared/widgets/empty_loading.dart';
@@ -18,18 +17,12 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  final User? _user = AppController.instance.user;
+  // final User? _user = AppController.instance.user;
+  final User? _user = FirebaseAuth.instance.currentUser;
 
   bool _estaSaindo = false;
   @override
   void initState() {
-    // if (_user == null) {
-    //   Authentication.isLogged(context: context).then((value) {
-    //     setState(() {
-    //       _user = value;
-    //     });
-    //   });
-    // }
     super.initState();
   }
 
@@ -72,52 +65,64 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
+  // Widget _cabecalhoWidget() {
+  //   return FutureBuilder(
+  //     future: _auth,
+  //     builder: (context, snapshot) {
+  //       if (snapshot.hasError) {
+  //         return const Text('deu merda');
+  //       } else if (snapshot.connectionState == ConnectionState.done) {
+  //         return Text('Email vazio');
+  //       }
+  //       return Text(AppController.instance.user!.email ?? 'ACABOU');
+  //       // return const Text('ACABOU');
+  //     },
+  //   );
+  // }
+
   Widget _cabecalhoWidget() {
     if (_user != null) {
-      if (_user!.photoURL != null) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ClipOval(
-                child: Material(
-                  color: Colors.grey,
-                  child: CachedNetworkImage(
-                    fit: BoxFit.fitHeight,
-                    imageUrl: _user!.photoURL!,
-                    placeholder: (context, url) => loading(),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipOval(
+              child: Material(
+                color: Colors.grey,
+                child: CachedNetworkImage(
+                  fit: BoxFit.fitHeight,
+                  imageUrl: _user!.photoURL!,
+                  placeholder: (context, url) => loading(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                _user!.displayName!,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-              ),
-            ),
-          ],
-        );
-      }
-      return ClipOval(
-        child: Material(
-          color: Colors.grey.withOpacity(0.3),
-          child: const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Icon(
-              Icons.person,
-              size: 60,
-              color: Colors.grey,
             ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              _user!.displayName!,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+          ),
+        ],
       );
+      // return ClipOval(
+      //   child: Material(
+      //     color: Colors.grey.withOpacity(0.3),
+      //     child: const Padding(
+      //       padding: EdgeInsets.all(16.0),
+      //       child: Icon(
+      //         Icons.person,
+      //         size: 60,
+      //         color: Colors.grey,
+      //       ),
+      //     ),
+      //   ),
+      // );
     }
     return const Spacer();
   }

@@ -27,6 +27,12 @@ class _PageMaskState extends State<PageMask> {
       OpcaoMenu(Icons.home, 'Início', '/home', true, Colors.black);
 
   @override
+  void initState() {
+    // Authentication.alreadyLogged(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ZoomDrawer(
       controller: _zoomController,
